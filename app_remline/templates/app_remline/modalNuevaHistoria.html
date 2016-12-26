@@ -1,0 +1,54 @@
+
+<div class="modal-header">
+	<h2 class="section-title" ng-show="mostrarHtml!='modificar'">{/'_addHistoria' | translate/} {/item.nombre/}</h2>
+	<h2 class="section-title" ng-show="mostrarHtml=='modificar'">{/'_modHistoria2' | translate/} {/item.nombre/}</h2>
+</div>
+<div class="modal-body">
+
+	<div ng-show="tipoEntradaDatos=='decidir'" style="text-align: center;">
+		<label for="name" class="col-sm-12 col-xs-12 control-label">{/'_selecForma' | translate/}</label>
+	  	<div class="controls" class="col-sm-12 col-xs-12" >	
+			<button type="button" class="btn btn-primary" ng-click="tipoEntradaDatos='manual';" >{/'_botonManual' | translate/}</button>
+			<button type="button" class="btn btn-primary" ng-click="tipoEntradaDatos='csv';">{/'_botonCSV' | translate/}</button>
+		</div>
+	</div>
+	<p>
+		<form class="form-horizontal" name="editForm" ng-show="tipoEntradaDatos!='decidir'">
+			  <div class="form-group">
+			    <label for="name" class="col-sm-3 col-xs-12 control-label">{/'_nombre' | translate/}</label>
+			    <div class="col-sm-8 col-xs-12"><input type="text" name="nombre" class="form-control" placeholder="Nombre" ng-model="item.nombre" required></div>
+			  </div>
+			  <div class="form-group">
+			    <label for="name" class="col-sm-3 col-xs-12 control-label">{/'_descripcion' | translate/}</label>
+			    <div class="col-sm-8 col-xs-12"><input type="text" class="form-control" placeholder="Descripcion" ng-model="item.descripcion" required></div>
+			  </div>
+		</form>
+		<form name="cargaForm" ng-show="tipoEntradaDatos==='csv'">
+			    <div>
+			      <label>{/'_explicaCSV' | translate/}</label>
+			      <p style="font-size:12px">{/'_explicaCSV1' | translate/}<br>{/'_explicaCSV2' | translate/}</p>
+			    </div>
+			    <div class="form-group" style="margin-bottom: 60px;">
+				    <div class="col-sm-2 col-xs-0"/>
+				    <div class="col-sm-8 col-xs-12">
+				      <label style="text-align: center;" for="up">{/'_explicaCSV3' | translate/}</label>
+				      <input id="up" type="file" csv-reader results="file" separator=" "/>
+				    </div>
+			    </div>
+		</form>
+
+	</p>
+</div>
+<div class="modal-footer">
+  	<div class="controls" ng-show="tipoEntradaDatos==='manual'">
+		<button type="button" ng-show="mostrarHtml==='modificar'" class="btn btn-danger pull-left" 
+			ng-click="eliminar()" >{/'_eliminarHistoria' | translate/}</button>
+		<button type="button" class="btn btn-primary" ng-click="ok()" ng-disabled="editForm.$invalid">{/'_aceptar' | translate/}</button>
+		<button type="button" class="btn btn-primary" ng-click="cancel()">{/'_cerrar' | translate/}</button>
+	</div>
+  	<div class="controls" ng-show="tipoEntradaDatos==='csv'">
+		<button type="button" class="btn btn-primary" ng-click="cargarArchivo()" ng-disabled="!file || editForm.$invalid">{/'_cargarArchivo' | translate/}</button>
+		<button type="button" class="btn btn-primary" ng-click="cancel()">{/'_cerrar' | translate/}</button>
+	</div>
+</div>
+

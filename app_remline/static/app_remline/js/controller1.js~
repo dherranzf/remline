@@ -1,0 +1,700 @@
+
+
+/*autenticacionControllers.controller('ProductosFECICtrl', ['$scope', '$http', '$routeParams', '$uibModal', '$log',
+  function($scope, $http, $routeParams, $uibModal, $log) {*/
+
+app.controller('controller1', ['$scope', '$http', '$uibModal', "$translate", function($scope, $http, $uibModal,$translate){
+	$scope.historiaSeleccionada = null;
+	$scope.sucesoSelecc = "";
+	$scope.sucesos = null;
+	$scope.fechaFormateada= null;
+
+	$scope.file = 'vacio';
+
+	$http.get("/api/historias/")
+		.then(function(respuesta){
+			console.log("res", respuesta);
+			$scope.historias = respuesta.data;
+		}, function(respuesta){
+			console.log("Error GET historias", respuesta);
+			$scope.historias = [{name: "Error!! " + respuesta.status}];
+	});
+
+	$scope.sucesos_por_historia = function (id) {
+		$scope.sucesoSelecc = "";
+		$http.get("/api/sucesos/"+id)
+			.then(function(respuesta){
+				console.log("res", respuesta);
+				$scope.sucesos = respuesta.data;
+			}, function(respuesta){
+				$scope.sucesos = [{name: "Error!! " + respuesta.status}];
+		});
+	}
+
+	$scope.formateoFecha = function () {
+		if($scope.sucesoSelecc!=""){
+			var fecha = (new Date ($scope.sucesoSelecc.fecha));
+			//$scope.sucesoSelecc.fecha = (fecha.getDate()) + "/" + (fecha.getMonth()+ 1) + "/" + fecha.getFullYear();
+			$scope.fechaFormateada = fecha.getDate().toString() + "/" + 
+					(fecha.getMonth()+ 1).toString() + "/" + fecha.getFullYear().toString() ; 
+			return null;
+		} else{
+			return null;
+		}	
+	}
+
+  	$scope.cambiarIdioma = function(lang){
+   		$translate.use(lang); 
+  	}
+
+
+
+	  // Metodo para abrir la ventana modal de nueva historia
+	  $scope.nueva_historia = function (index) {
+		    var uibModalInstance = $uibModal.open({
+		      animation: $scope.animationsEnabled,
+		      templateUrl: 'modalNuevaHistoria.html',
+		      controller: 'modalNuevaHistoria',
+		      resolve:{ 
+		    		refresh: function () {
+		    			return $scope;
+		    		}
+		    	}	
+		    });
+		    
+		  };
+
+	  // Metodo para abrir la ventana modal de nuevo suceso
+	  $scope.anadir_suceso = function (index) {
+		    var uibModalInstance = $uibModal.open({
+		      animation: $scope.animationsEnabled,
+		      templateUrl: 'modalNuevoSuceso.html',
+		      controller: 'modalNuevoSuceso',
+		      resolve:{ 
+		    		refresh: function () {
+		    			return $scope;
+		    		}
+		    	}	
+		    });
+		    
+		  };
+
+	  // Metodo para abrir la ventana modal de modificacion de historia
+	  $scope.modificar_historia = function (index) {
+		    var uibModalInstance = $uibModal.open({
+		      animation: $scope.animationsEnabled,
+		      templateUrl: 'modalNuevaHistoria.html',
+		      controller: 'modalModificarHistoria',
+		      resolve:{ 
+		    		refresh: function () {
+		    			return $scope;
+		    		}
+		    	}	
+		    });
+		    
+		  };
+
+	  // Metodo para abrir la ventana modal de modificacion de suceso
+	  $scope.modificar_suceso = function (index) {
+		    var uibModalInstance = $uibModal.open({
+		      animation: $scope.animationsEnabled,
+		      templateUrl: 'modalNuevoSuceso.html',
+		      controller: 'modalModificarSuceso',
+		      resolve:{ 
+		    		refresh: function () {
+		    			return $scope;
+		    		}
+		    	}	
+		    });
+		    
+		  };
+
+}]);
+
+//----------------------------------------------------------------------------------------------------------------------------
+//Controlador para modificar sucesos
+app.controller('modalModificarSuceso', function ($scope, $http, $uibModalInstance,  refresh) {
+	console.log("modalModificarSuceso:",refresh.sucesoSelecc);
+
+	$scope.mostrarHtml="modificar";
+	$scope.item = { id: refresh.sucesoSelecc.id,
+			nombre: refresh.sucesoSelecc.nombre, 
+			descripcion: refresh.sucesoSelecc.descripcion, 
+			fecha: (new Date(refresh.sucesoSelecc.fecha)),
+			tipo: refresh.sucesoSelecc.tipo, 
+			coste: refresh.sucesoSelecc.coste, 
+			media: refresh.sucesoSelecc.media, 
+			historia: refresh.sucesoSelecc.historia}
+
+
+
+	//datepicker
+	  $scope.clear = function() {
+	    $scope.item.fecha = null;
+	  };
+
+	  $scope.dateOptions = {
+	    formatYear: 'yy',
+	    startingDay: 1
+	  };
+
+	  $scope.open1 = function() {
+	    $scope.popup1.opened = true;
+	  };
+
+	  $scope.popup1 = {
+	    opened: false
+	  };
+
+
+	  $scope.ok = function () {
+			  $http.put("/api/sucesos/"+$scope.item.id, $scope.item)
+				.then(function(respuesta){
+					console.log("PUT sucesos OK", respuesta);
+					refresh.sucesoSelecc=$scope.item;
+				}, function(respuesta){
+					console.log("Error PUT sucesos", respuesta);
+					//refresh.sucesos = [{name: "Error!! " + respuesta.status}];
+				});
+
+				  $http.get("/api/sucesos/"+$scope.item.historia)
+					.then(function(respuesta){
+						console.log("res", respuesta);
+						refresh.sucesos = respuesta.data;
+						//para dejar seleccionada el suceso
+						for (var i = 0; i < refresh.sucesos.length; i++) {
+						  	if(refresh.sucesos[i].nombre==$scope.item.nombre){
+						  		refresh.sucesoSelecc = refresh.sucesos[i];
+							}
+						}
+					}, function(respuesta){
+						console.log("Error GET sucesos", respuesta);
+						refresh.sucesos = [{name: "Error!! " + respuesta.status}];
+				  });
+
+			  $uibModalInstance.dismiss('cancel');
+	  };
+
+	  $scope.eliminar = function () {
+		  
+			  $http.delete("/api/sucesos/"+$scope.item.id)
+				.then(function(respuesta){
+					console.log("DELETE sucesos OK", respuesta);
+					refresh.sucesoSelecc="";
+				}, function(respuesta){
+					console.log("Error DELETE sucesos", respuesta);
+					//refresh.historias = [{name: "Error!! " + respuesta.status}];
+				});
+
+				  $http.get("/api/sucesos/"+$scope.item.historia)
+					.then(function(respuesta){
+						console.log("res", respuesta);
+						refresh.sucesos = respuesta.data;
+					}, function(respuesta){
+						console.log("Error GET sucesos", respuesta);
+						refresh.sucesos = [{name: "Error!! " + respuesta.status}];
+				  });
+
+			  $uibModalInstance.dismiss('cancel');
+	  };
+	
+	  $scope.cancel = function () {
+	// Cerramos
+	    $uibModalInstance.dismiss('cancel');
+	  };
+	
+});
+//----------------------------------------------------------------------------------------------------------------------------
+//Controlador para nuevas historias
+app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,  refresh) {
+	
+	$scope.item = {nombre: "", descripcion: ""}
+	$scope.tipoEntradaDatos="decidir";//decidir,manual,csv
+	var noDismiss= false;//para no cerrar la venta modal si no queremos
+
+	  $scope.ok = function () {
+		  refresh.sucesoSelecc = "";
+		  $scope.loadData = function(){
+			  $http.post("/api/historias/", $scope.item)
+				.then(function(respuesta){
+					console.log("POST historias OK", respuesta);
+					refresh.sucesos=[];
+				}, function(respuesta){
+					console.log("Error POST historias", respuesta);
+					refresh.historias = [{name: "Error!! " + respuesta.status}];
+				});
+			  if(!noDismiss) $uibModalInstance.dismiss('cancel');
+		  }
+		  $scope.loadData();
+
+		  $http.get("/api/historias/")
+			.then(function(respuesta){
+				console.log("res", respuesta);
+				refresh.historias = respuesta.data;
+				//para dejar seleccionada la historia
+				for (var i = 0; i < refresh.historias.length; i++) {
+				  	if(refresh.historias[i].nombre==$scope.item.nombre){
+				  		if(!noDismiss) refresh.historiaSeleccionada = refresh.historias[i];
+						//console.log("Historia seleccionada:", refresh.historiaSeleccionada);
+					}
+				}
+			}, function(respuesta){
+				console.log("Error GET historias", respuesta);
+				refresh.historias = [{name: "Error!! " + respuesta.status}];
+		  });
+
+
+
+	  };
+	
+	  $scope.cancel = function () {
+	// Cerramos
+	    $uibModalInstance.dismiss('cancel');
+	  };
+
+	  $scope.cargarArchivo = function () {
+		// Convertimos datos del archivo(ya en formato JSON) en una historia con eventos
+		// y mandamos al back
+		console.log("cargarArchivo",$scope.file);
+
+		//guardamos historia
+		//obtenemos id de historia
+		//noDismiss= true;
+		//$scope.ok();
+		  refresh.sucesoSelecc = "";
+			  $http.post("/api/historias/", $scope.item)
+				.then(function(respuesta){
+					console.log("POST historias OK", respuesta);
+					refresh.sucesos=[];
+					//obtenemos id de historia
+					  $http.get("/api/historias/")
+						.then(function(respuesta){
+							console.log("res", respuesta);
+							refresh.historias = respuesta.data;
+							//para dejar seleccionada la historia
+							for (var i = 0; i < refresh.historias.length; i++) {
+							  	if(refresh.historias[i].nombre==$scope.item.nombre){
+							  		refresh.historiaSeleccionada = refresh.historias[i];
+								}
+							}
+							//guardamos eventos
+							var event_enviar = {nombre: "", descripcion: "", fecha: "", tipo: "", coste: "", media: "http://www.", historia: ""}
+							for(var i = 0; i < $scope.file.length; i++)
+							{
+								if($scope.file[i].url==undefined){//linea vacia o erronea
+									console.log("linea vacia o erronea");
+									   if(i==$scope.file.length-1){//coincide con la ultima iteracion
+										$http.get("/api/sucesos/"+refresh.historiaSeleccionada.id)
+											.then(function(respuesta){
+												console.log("GET sucesos OK", respuesta);
+												refresh.sucesos = respuesta.data;
+											}, function(respuesta){
+												console.log("Error GET sucesos", respuesta);
+												refresh.sucesos = [{name: "Error!! " + respuesta.status}];
+										});
+									   }
+
+								continue; 
+								}
+
+								event_enviar = {nombre: $scope.file[i].nombre, 
+										descripcion: $scope.file[i].descripcion, 
+										fecha: (new Date($scope.file[i].fecha)),
+										tipo: $scope.file[i].tipo, 
+										coste: $scope.file[i].relevancia, 
+										media: $scope.file[i].url, 
+										historia: refresh.historiaSeleccionada.id
+								}
+
+								  
+								$http.post("/api/sucesos/", event_enviar)
+									.then(function(respuesta){
+									   console.log("POST sucesos OK", respuesta);
+									   if(i==$scope.file.length-1){//ultima iteracion
+										$http.get("/api/sucesos/"+refresh.historiaSeleccionada.id)
+											.then(function(respuesta){
+												console.log("GET sucesos OK", respuesta);
+												refresh.sucesos = respuesta.data;
+											}, function(respuesta){
+												console.log("Error GET sucesos", respuesta);
+												refresh.sucesos = [{name: "Error!! " + respuesta.status}];
+										});
+									   }
+									}, function(respuesta){
+										console.log("Error POST sucesos", respuesta);
+										refresh.sucesos = [{name: "Error!! " + respuesta.status}];
+								});
+				
+							}
+
+						}, function(respuesta){
+							console.log("Error GET historias", respuesta);
+							refresh.historias = [{name: "Error!! " + respuesta.status}];
+					  });
+				}, function(respuesta){
+					console.log("Error POST historias", respuesta);
+					refresh.historias = [{name: "Error!! " + respuesta.status}];
+				});
+		  
+
+	        $uibModalInstance.dismiss('cancel');
+	  };
+	
+});
+//----------------------------------------------------------------------------------------------------------------------------
+//Controlador para modificar historias
+app.controller('modalModificarHistoria', function ($scope, $http, $uibModalInstance,  refresh) {
+	console.log("modalModificarHistoria:",refresh.historiaSeleccionada);
+	$scope.item = refresh.historiaSeleccionada;
+	$scope.mostrarHtml="modificar";
+	$scope.tipoEntradaDatos="manual";
+	
+	  $scope.ok = function () {
+			  $http.put("/api/historias/"+$scope.item.id, $scope.item)
+				.then(function(respuesta){
+					console.log("PUT historias OK", respuesta);
+					refresh.historiaSeleccionada=$scope.item;
+				}, function(respuesta){
+					console.log("Error PUT historias", respuesta);
+					//refresh.historias = [{name: "Error!! " + respuesta.status}];
+				});
+
+				  $http.get("/api/historias/")
+					.then(function(respuesta){
+						console.log("res", respuesta);
+						refresh.historias = respuesta.data;
+						//para dejar seleccionada la historia
+						for (var i = 0; i < refresh.historias.length; i++) {
+						  	if(refresh.historias[i].nombre==$scope.item.nombre){
+						  		refresh.historiaSeleccionada = refresh.historias[i];
+								//console.log("Historia seleccionada:", refresh.historiaSeleccionada);
+							}
+						}
+					}, function(respuesta){
+						console.log("Error GET historias", respuesta);
+						refresh.historias = [{name: "Error!! " + respuesta.status}];
+				  });
+
+			  $uibModalInstance.dismiss('cancel');
+	  };
+
+	  $scope.eliminar = function () {
+		  
+			  $http.delete("/api/historias/"+$scope.item.id)
+				.then(function(respuesta){
+					console.log("DELETE historias OK", respuesta);
+					refresh.historiaSeleccionada=null;
+					refresh.sucesos=null;
+				}, function(respuesta){
+					console.log("Error DELETE historias", respuesta);
+					//refresh.historias = [{name: "Error!! " + respuesta.status}];
+				});
+
+				  $http.get("/api/historias/")
+					.then(function(respuesta){
+						console.log("res", respuesta);
+						refresh.historias = respuesta.data;
+					}, function(respuesta){
+						console.log("Error GET historias", respuesta);
+						refresh.historias = [{name: "Error!! " + respuesta.status}];
+				  });
+
+			  $uibModalInstance.dismiss('cancel');
+	  };
+	
+	  $scope.cancel = function () {
+	// Cerramos
+	    $uibModalInstance.dismiss('cancel');
+	  };
+	
+});
+//****************************************************************************
+app.directive('csvReader', function () { //basada en el proyecto https://github.com/bahaaldine/angular-csv-import
+
+    //Funcion para convertir a json
+    var convertToJSON = function (content) {
+
+        //variables
+        var lines = content.csv.split('\n'),
+            headers = lines[0].split(content.separator),
+            columnCount = lines[0].split(content.separator).length,
+            results = [];
+
+        // For each row
+        for (var i = 1; i < lines.length; i++) {
+            var obj = {};
+            var line = lines[i].split(new RegExp(content.separator + '(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)'));
+            // For each header
+            for (var j = 0; j < headers.length; j++) {
+                obj[headers[j]] = line[j];
+            }
+            // Añadirmos al array de resultados
+            results.push(obj);
+        }
+        return results;
+    };
+
+    return {
+        restrict: 'A',
+        scope: {
+            results: '=',
+            separator: '=',
+        },
+        link: function (scope, element, attrs) {
+
+            var data = {
+                csv: null,
+                separator: scope.separator || ','
+            };
+
+            element.on('change', function (e) {
+
+                var files = e.target.files;
+
+                if (files && files.length) {
+                    // fileReader
+                    var reader = new FileReader();
+                    var file = (e.srcElement || e.target).files[0];
+                    // fileReader has loaded
+                    reader.onload = function (e) {
+                        var contents = e.target.result;
+                        data.csv = contents;
+                        scope.$apply(function () {
+                            scope.results = convertToJSON(data);
+
+                        });
+                    };
+                    reader.readAsText(file);
+                }
+            });
+        }
+    };
+});
+//****************************************************************************
+
+app.directive('ghVisualization', function () {
+
+
+	// Dimensiones de canvas/dibujo
+	var margin = {top: 30, right: 20, bottom: 30, left: 80},
+	    width = 1000 - margin.left - margin.right,
+	    height = 270 - margin.top - margin.bottom;
+
+  	return {
+	    restrict: 'E',
+	    scope: {
+	      val: '=',
+	      suceso: '='
+	},
+	link: function (scope, element, attrs) {
+
+
+		// Parsear fecha
+		var parseDate = d3.timeFormat("%d-%b-%Y");
+
+		// Rangos de x e y
+		var c10 = d3.scaleOrdinal(d3.schemeCategory10);
+		var x = d3.scaleTime().range([0, width])/*.domain([new Date(2000, 0, 1, 0), new Date(2020, 0, 1, 2)])*/;
+		var y = d3.scaleBand().range([height,0]);
+
+		// Definimos axis
+		var xAxis = d3.axisBottom(x)
+		    .ticks(5);
+
+		var yAxis = d3.axisLeft(y)
+			.tickFormat("");
+
+		var yAxisLetras = d3.axisLeft(y);
+
+		var yAxisGrid = d3.axisLeft(y)
+		    .tickSizeInner(-width)
+		    .tickSizeOuter(0)
+		    .tickPadding(10)
+		    .tickFormat("");
+
+		// Definimos las lineas
+		var valueline = d3.line()
+		    .x(function(d) { return x(new Date(d.fecha)); })
+		    .y(function(d) { return y(d.tipo); })
+		    .curve(d3.curveMonotoneX)
+		var valueline2 = d3.line()
+		    .x(function(d) { return x(new Date(d.fecha))*1.01; })
+		    .y(function(d) { return y(d.tipo)*1.01; })
+		    .curve(d3.curveMonotoneX)
+		var valueline3 = d3.line()
+		    .x(function(d) { return x(new Date(d.fecha))*0.99; })
+		    .y(function(d) { return y(d.tipo)*0.99; })
+		    .curve(d3.curveMonotoneX)
+
+		// Definimos 'div' tooltips
+		var div = d3.select("body")
+		    .append("div")  // declare the tooltip div 
+		    .attr("class", "tooltip")
+		    .style("opacity", 0);
+
+	     	// svg y g
+	    	var vis = d3.select(element[0])
+			.append("svg")
+				.attr("width", width + margin.left + margin.right)
+			 	.attr("height", height + margin.top + margin.bottom)
+	   		 .append("g")
+				.attr("transform", 
+			      	"translate(" + margin.left + "," + margin.top + ")");
+
+     	 scope.$watch('val', function (newVal, oldVal) {
+
+		console.log("empieza watch: val=");
+		console.log(newVal);
+		console.log(oldVal);
+
+		// borramos elememtos 
+		vis.selectAll('*').remove();
+
+		// si no existe newVal salimos
+		if (!newVal) {
+		  return;
+		}
+
+		//ordenamos por fechas
+		function comparaFechas(a, b) {
+		    return new Date(a.fecha).getTime() - new Date(b.fecha).getTime();
+		}
+		newVal.sort(comparaFechas);
+
+
+		//parseamos fechas
+		newVal.forEach(function(d) {
+			//d.fecha = parseDate(d.fecha);
+			//d.fecha = parseDate(new Date(d.fecha));
+			d.tipo = d.tipo;
+		});
+
+
+       		// Definimos los dominios        
+
+		var minD = d3.min(newVal, function(d) { return new Date(((new Date(d.fecha)).getTime())-50*24*60*60*1000); });
+		//new Date(theDate.getTime() + days*24*60*60*1000); le resto media año para que no quede pegado al eje el 1er punto
+		var maxD = d3.max(newVal, function(d) { return new Date(d.fecha); });
+		x.domain([minD,maxD]);
+        
+		//y.domain([0, d3.max(newVal, function(d) { return d.tipo; })]);
+		console.log(newVal.map(function(d) { return d.tipo; }));
+		y.domain(newVal.map(function(d) { return d.tipo; }));
+
+
+
+		// Añdimos los valueline path.
+		vis.append("path")
+		     .attr("opacity", "0")
+	   	     .transition()
+		     .delay(2000)
+		     .duration(3000)
+		     //.ease('quad-out')
+		     .attr("stroke-dashoffset", 0)
+		     .attr("opacity", "1")
+		     .attr("class", "line")
+		     .attr("d", valueline(newVal));
+		// Añdimos los valueline path
+		vis.append("path")
+		   .attr("class", "line")
+		   .attr("opacity", "0")
+		   .style("stroke", "white")
+	   	   .transition()
+		   .delay(2000)
+		   .duration(3000)
+		   .style("stroke-width", 1)
+		   .attr("opacity", "1")
+		   .attr("d", valueline2(newVal));
+		// Añdimos los valueline path
+		vis.append("path")
+		   .attr("class", "line")
+		   .attr("opacity", "0")
+	   	   .style("stroke", "grey")
+		   .transition()
+		   .delay(2000)
+		   .duration(3000)
+		   .style("stroke-width", 1)
+		   .attr("opacity", "1")
+		   .attr("d", valueline3(newVal));
+
+		// Añadimos los puntos
+		vis.selectAll("dot")
+		    .data(newVal)
+		  .enter().append("circle")
+		    .attr("r", function(d) { return 0; })
+		    .attr("class", "circleOut")	
+		    .attr("cx", function(d) { return x(new Date(d.fecha)); })
+		    .attr("cy", function(d) { return y(d.tipo)})
+
+
+
+     	 	// Eventooos
+      	   	.on("mouseover", function(d) {        
+			     div.transition()
+			        .duration(500)    
+			        .style("opacity", 0);
+		       	     div.transition()
+		       	         .duration(200)    
+		       	         .style("opacity", 0.9); 
+			     div.style("display","block");   
+		       	     div.html(
+		       	         '<a href= "'+d.media+'" target="_blank">' + //with a link
+		       	         parseDate(new Date(d.fecha)) +
+		       	         "</a>" +
+				 "<br/>"  + d.nombre)     
+		       	         .style("left", (d3.event.pageX) + "px")             
+		       	         .style("top", (d3.event.pageY-50) + "px")
+				 .style("background-color", "white")
+		 		 .style("border", "1px solid #30b5f2")
+		 		 .style("height", "35px") 
+	  			 .style("width", "150px");
+			     d3.select(this).attr("r", function(d) { return 5+parseInt(d.coste); }).attr("class", "circleOn");
+       	   	})
+      	    	.on("mouseout", function(d) {        
+        	     div.style("display","none");   
+	       	     div.html('<a>quitar</a>');
+		     d3.select(this).attr("r", function(d) { return 3+parseInt(d.coste); })
+			    .attr("class", function(d) { if(scope.suceso!="" & d.nombre==scope.suceso.nombre) return "circleOn"; else return"circleOut";});
+       	    	 })
+      	    	.on("click", function(d) {        
+		     console.log("Clickkkkk ON");
+		     scope.$apply(function(){
+			  scope.suceso=d;
+		      });
+		     console.log(scope.suceso);
+		     d3.selectAll("circle")
+		    	   .attr("class", function(d) { if(scope.suceso!="" & d.nombre==scope.suceso.nombre) return "circleOn"; else return"circleOut";});
+
+       	    	 })
+   	   	 .transition()
+	     	 .delay(function(d, i) {return i * 100; })
+	    	 .duration(2000)
+	   	 .attr("r", function(d) { return 3+parseInt(d.coste); })
+
+		// x Axis
+		vis.append("g")
+		    .attr("class", "x axis")
+		    .attr("transform", "translate(0," + height + ")")
+		    .call(xAxis);
+
+		// y Axis
+		vis.append("g")
+		    .attr("class", "y axis")
+		    .call(yAxis);
+		// y Axis Letras
+		vis.append("g")
+		    .attr("class", "nopath")
+		    .attr("transform", "translate(0,-30)")
+		    .call(yAxisLetras);
+		// y Axis GRID
+		vis.append("g")
+		    .attr("class", "grid")
+		    .call(yAxisGrid);
+
+      });
+    }
+  }
+});
+
+
+

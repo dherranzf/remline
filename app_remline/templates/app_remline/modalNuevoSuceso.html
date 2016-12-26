@@ -1,0 +1,62 @@
+
+<div class="modal-header">
+	<h2 class="section-title" ng-show="mostrarHtml!='modificar'">{/'_addSuceso' | translate/} {/item.nombre/}</h2>
+	<h2 class="section-title" ng-show="mostrarHtml==='modificar'">{/'_modSuceso' | translate/} {/item.nombre/}</h2>
+</div>
+<div class="modal-body">
+	<p>
+		<form class="form-horizontal" name="editForm">
+			  <div class="form-group">
+			    <label for="name" class="col-sm-4 col-xs-12 control-label">{/'_nombre' | translate/}</label>
+			    <div class="col-sm-8 col-xs-12"><input type="text" name="nombre" class="form-control" placeholder="Nombre" ng-model="item.nombre" required/></div>
+			  </div>
+			  <div class="form-group">
+			    <label for="name" class="col-sm-4 col-xs-12 control-label">{/'_descripcion' | translate/}</label>
+			    <div class="col-sm-8 col-xs-12"><input type="text" class="form-control" placeholder="Descripcion" ng-model="item.descripcion" required/></div>
+			  </div>
+			  <div class="form-group">
+				<label for="name" class="col-sm-4 col-xs-12 control-label">{/'_fecha' | translate/}</label>
+		                <div class="col-sm-8 col-xs-12">
+				   <p class="input-group">
+			 	     <input type="text" class="form-control" uib-datepicker-popup="{/format/}" ng-model="item.fecha" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="dd-MMMM-yyyy" required/>
+				     <span class="input-group-btn">
+			    	       <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+			  	     </span>
+				   </p>
+		                </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="name" class="col-sm-4 col-xs-12 control-label" ng-mouseover="hoverTipo=true;" 
+					ng-mouseleave="hoverTipo=false;">{/'_tipo' | translate/}</label>
+			    <div class="col-sm-8 col-xs-12"><input type="text" class="form-control" placeholder="Tipo" ng-model="item.tipo" required/></div>
+			  </div>
+			  <div class="form-group">
+			    		<label for="coste" class="col-sm-4 col-xs-12 control-label" ng-mouseover="hoverCoste=true;" 
+					ng-mouseleave="hoverCoste=false;">{/'_coste' | translate/}</label>
+					<span ng-show="hoverCoste" style="font-size:10px"><a>&nbsp;&nbsp;<strong>{/'_costeInfo' | translate/}</strong></a></span>
+			    <div class="col-sm-8 col-xs-12">
+				<select class="form-control" ng-model="item.coste" required>
+					<option value="1">{/'_costeNormal' | translate/}</option>
+				 	<option value="2">{/'_costeImportante' | translate/}</option>							
+					<option value="3">{/'_costeMuyImportante' | translate/}</option>
+				</select></div>
+			  </div>
+			  <div class="form-group">
+			    <label for="name" class="col-sm-4 col-xs-12 control-label" ng-mouseover="hoverUrl=true;" 
+					ng-mouseleave="hoverUrl=false;">{/'_media' | translate/}</label>
+					<span ng-show="hoverUrl" style="font-size:10px"><a>&nbsp;&nbsp;{/'_mediaInfo' | translate/} <strong>{/'_mediaInfo2' | translate/}</strong></a></span>
+			    <div class="col-sm-8 col-xs-12"><input type="text" class="form-control" placeholder="Url" ng-model="item.media" required/></div>
+			  </div>
+
+			</form>
+	</p>
+</div>
+<div class="modal-footer">
+  	<div class="controls">
+		<button type="button" ng-show="mostrarHtml==='modificar'" class="btn btn-danger pull-left" 
+			ng-click="eliminar()">{/'_eliminarSuceso' | translate/}</button>
+		<button type="button" class="btn btn-primary" ng-click="ok()" ng-disabled="editForm.$invalid">{/'_aceptar' | translate/}</button>
+		<button type="button" class="btn btn-primary" ng-click="cancel()">{/'_cerrar' | translate/}</button>
+	</div>
+</div>
+

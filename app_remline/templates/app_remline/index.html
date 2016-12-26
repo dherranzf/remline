@@ -1,0 +1,270 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<title>RemLine - Líneas temporales dinámicas</title>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+<!--
+
+Template 2077 RemLine
+
+http://www.tooplate.com/view/2077-modern-town
+
+-->
+	<link rel="stylesheet" href="{% static 'app_remline/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'app_remline/css/animate.min.css' %}">
+	<link rel="stylesheet" href="{% static 'app_remline/css/font-awesome.min.css' %}">
+   	<link rel="stylesheet" href="{% static 'app_remline/css/owl.theme.css' %}">
+	<link rel="stylesheet" href="{% static 'app_remline/css/owl.carousel.css' %}">
+	<link rel="stylesheet" href="{% static 'app_remline/css/style.css' %}">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+
+	<script src="{% static 'app_remline/js/d3.js' %}"></script>	
+	<script src="{% static 'app_remline/js/d3.min.js' %}"></script>	
+
+</head>
+<body data-spy="scroll" data-target=".navbar-collapse" data-offset="50" ng-app="appTest"  ng-controller="controller1">
+
+
+<!-- Home section
+================================================== -->
+<section id="home" class="parallax-section">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-md-12 col-sm-12">
+				<h3 class="wow fadeInDown" data-wow-delay="0.2s">{/'_preTitulo' | translate/}</h3>
+				<h1 class="wow fadeInDown">RemLine</h1>
+				<a href="#remline" ng-click="nueva_historia()" class="btn btn-danger smoothScroll wow fadeInUp" data-wow-delay="0.4s">{/'_nuevaHistoria' | translate/}</a>
+				<a href="#remline" class="btn btn-default smoothScroll wow fadeInUp" data-wow-delay="0.6s">{/'_verHistorias' | translate/}</a>
+			</div>
+
+		</div>
+	</div>		
+</section>
+
+
+<!-- Navigation section
+================================================== -->
+<section class="navbar navbar-default navbar-fixed-top sticky-navigation" role="navigation">
+	<div class="container">
+
+		<div class="navbar-header">
+			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+			</button>
+			<a href="#" class="navbar-brand">RemLine</a>
+		</div>
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right main-navigation">
+				<li><a href="#home" class="smoothScroll">{/'_inicio' | translate/}</a></li>
+				<li><a href="#remline" class="smoothScroll">REMLINE</a></li>
+               		 	<li><a href="#help" class="smoothScroll">{/'_ayuda' | translate/}</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">{/'_idioma' | translate/}<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+					<li ng-click="cambiarIdioma('es')">
+						<a href="#" onclick="return false;"><img src="{% static 'app_remline/images/es.png' %}" 
+							style="max-height: 12px">&nbsp;&nbsp;&nbsp;Español</a></li>
+					<li ng-click="cambiarIdioma('en')">
+						<a href="#" onclick="return false;"><img src="{% static 'app_remline/images/en.jpeg' %}" 
+							style="max-height: 12px">&nbsp;&nbsp;&nbsp;English</a></li>
+					</ul>
+				</li>
+			</ul>	
+		</div>
+	
+	</div>
+</section>
+
+<!-- remline section
+================================================== -->
+<section id="remline" class="paralla-section">
+	<div class="row" style="height:20px;">
+	</div>
+	<div class="container">
+	
+		<div class="row fadeInDown wow box-blue fondo1" style=" padding: 0; margin-bottom: 15px;" data-wow-delay="0.4s" >
+				<div class="col-md-4 col-sm-4"  style="border-right: 1px solid #31708f; border-bottom: 1px solid #31708f; height:250px; margin: 0;">
+					<div style="height:170px; margin-top: 30px;">
+						<label for="tipo de consulta" style="color:black; background-color:#30b5f2;
+							border-radius: 10px;" class="control-label">&nbsp;&nbsp;{/'_seleccionaHistoria' | translate/}&nbsp;&nbsp;
+						</label>					
+						<select class="form-control" ng-options="historia.nombre for historia in historias" 
+							ng-model="historiaSeleccionada" 
+							ng-change="sucesos_por_historia(historiaSeleccionada.id)">
+							<option value="">{/'_seleccione' | translate/}</option>
+						</select>
+					</div>
+					<div class="" style="margin-top: 0px;">
+						<button type="button" class="btn btn-default" ng-click="nueva_historia()">
+						{/'_nuevaHistoria' | translate/}</button>
+					</div>					
+
+				</div>
+				<div class="col-md-8 col-sm-8" style=" margin: 0;" >
+					<div class="row" style="height:200px; margin: 0px 10px;" >
+						<h2  style="color:black">{/historiaSeleccionada.nombre/}</h2>
+						<div ng-show="sucesoSelecc===''">{/historiaSeleccionada.descripcion/}</div>
+						<h4  ng-show="sucesoSelecc!='' && formateoFecha()==null">
+							<strong>{/sucesoSelecc.nombre/}</strong> - {/fechaFormateada/}</h4>
+						<div ng-show="sucesoSelecc!=''">{/sucesoSelecc.descripcion/}</div>
+						<a ng-show="sucesoSelecc!='' && sucesoSelecc.media!='http://www.'" 
+							href="{/sucesoSelecc.media/}">{/sucesoSelecc.media/}</a>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-sm-3">
+							<button type="button" class="btn btn-default" ng-click="modificar_historia()"
+								ng-hide="historiaSeleccionada===null" ng-disabled="false">
+							{/'_modHistoria' | translate/}</button>
+						</div>
+						<div class="col-md-3 col-sm-3">
+							<button type="button" class="btn btn-default" ng-click="modificar_suceso()"
+								ng-hide="sucesoSelecc===''" ng-disabled="false">
+							{/'_modEvento' | translate/}</button>
+						</div>
+						<div class="col-md-4 col-sm-4"></div>
+						<div class="col-md-2 col-sm-2">
+							<button type="button" class="btn btn-default" ng-click="anadir_suceso()"
+								ng-hide="historiaSeleccionada===null">
+							<i class=""></i><i class="glyphicon glyphicon-plus-sign"></i> {/'_evento' | translate/}</button>
+						</div>
+					</div>
+				</div>
+		</div>
+       		<div class="row fadeInDown wow box-blue fondo2" style="height:300px; overflow-x: auto;" data-wow-delay="0.6s">    
+			
+<gh-visualization ng-show="sucesos != null && sucesos.length > 0" val="sucesos" suceso="sucesoSelecc"></gh-visualization>
+
+			<div ng-show="sucesos === null || sucesos.length == 0" style="display: block; margin: auto; height30px; width:500px"><h4>{/'_noDibujo' | translate/}</h4></div>
+	 	</div>
+		 <div class="row" style="height:200px;">
+					<div>Nº de sucesos: {/sucesos.length/}</div>
+					<div ng-repeat="suceso in sucesos">
+						<div>{/suceso/}</div>
+					</div>		
+		 </div>
+	</div>
+</section>
+
+
+
+
+
+<!-- help section
+================================================== -->
+<div style="border-top: 3px solid #30b5f2;">
+<section id="help" class="paralla-section fondoAyuda" style="border-top: 2px solid #3c3c3c;">
+	<div class="container" >
+		<div class="row" height="10px" style="margin-bottom:50px;">
+			
+			<div class="col-md-2 col-sm-12">
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div style="text-align:center; margin-top:40px">
+				<img src="{% static 'app_remline/images/icono_ayuda.png' %}" class="img-responsive" 
+					alt="about img 1" style="max-height: 125px;">
+				</div>
+			</div>
+            
+			<div class="col-md-6 col-sm-12">
+				<div class="about-des" style="margin-top:30px; ">
+					<h4>{/'_ayuda' | translate/}</h4>
+					<h3>{/'_crearRemline' | translate/}</h3>
+					<p>{/'_crearRemlineInfo' | translate/}</p>
+					<h3>{/'_verModRemline' | translate/}</h3>
+					<p>{/'_verModRemlineInfo' | translate/}</p>
+					<p>{/'_verModRemlineInfo2' | translate/}</p>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+			</div>
+		</div>
+
+	</div>
+</section>
+</div>
+
+<!-- Footer section
+================================================== -->
+<div style="border-top: 3px solid #30b5f2;">
+<footer>
+	<div class="container">
+		<div class="row">
+		
+			<div class="col-md-2 col-sm-0 wow fadeInUp" data-wow-delay="0.3s">
+			</div>
+			<div class="col-md-3 col-sm-4 wow fadeInUp" data-wow-delay="0.9s">
+				<h2>RemLine</h2>
+				<hr align="left" noshade="noshade" size="2" width="80%" color="#30b5f2"/>
+				<ul class="social-icon">
+					<li><a href="#" class="fa fa-facebook wow fadeIn" data-wow-delay="0.3s"></a></li>
+					<li><a href="#" class="fa fa-twitter wow fadeIn" data-wow-delay="0.6s"></a></li>
+					<li><a href="#" class="fa fa-dribbble wow fadeIn" data-wow-delay="0.9s"></a></li>
+					<li><a href="#" class="fa fa-behance wow fadeIn" data-wow-delay="1s"></a></li>
+				</ul>
+			</div>		
+			<div class="col-md-5 col-sm-8 wow fadeInUp" data-wow-delay="0.3s">
+				<p>{/'_footer' | translate/}</p>
+				<p>Copyright &copy; 2017 RemLine</p>
+			</div>		
+
+		</div>
+	</div>
+	
+
+	<div class="col-md-12 col-sm-12">
+		<div class="copyright-text wow bounceIn">
+			
+		</div>
+	</div>
+</footer>
+</div>
+
+<!-- Javascripts al final (para no relentizar la carga de la pagina(descargas paralelas)
+======================================================================================= -->
+<script src="{% static 'app_remline/js/jquery.js' %}"></script>
+<script src="{% static 'app_remline/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'app_remline/js/smoothscroll.js' %}"></script>
+<script src="{% static 'app_remline/js/jquery.nav.js' %}"></script>
+<script src="{% static 'app_remline/js/jquery.parallax.js' %}"></script>
+<script src="{% static 'app_remline/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'app_remline/js/isotope.min.js' %}"></script>
+<script src="{% static 'app_remline/js/wow.min.js' %}"></script>
+<script src="{% static 'app_remline/js/counter.js' %}"></script>
+<script src="{% static 'app_remline/js/custom.js' %}"></script>
+<script src="{% static 'app_remline/js/angular.min.js' %}"></script>
+<script src="{% static 'app_remline/js/angular-translate-v2.13.js' %}"></script>
+<script src="{% static 'app_remline/js/angular-animate.js' %}"></script>
+<script src="{% static 'app_remline/js/angular-touch.js' %}"></script>
+<script src="{% static 'app_remline/js/angular-route.js' %}"></script>
+<script src="{% static 'app_remline/js/ui-bootstrap-tpls-2.2.0.min.js' %}"></script>
+
+<script src="{% static 'app_remline/js/remline/appRemline.js' %}"></script>
+<script src="{% static 'app_remline/js/remline/controller1.js' %}"></script>
+<script src="{% static 'app_remline/js/remline/controllerNuevoSuceso.js' %}"></script>
+<script src="{% static 'app_remline/js/remline/controllerModificarSuceso.js' %}"></script>
+<script src="{% static 'app_remline/js/remline/controllerNuevaHistoria.js' %}"></script>
+<script src="{% static 'app_remline/js/remline/controllerModificarHistoria.js' %}"></script>
+<script src="{% static 'app_remline/js/remline/directiveCsvReader.js' %}"></script>
+<script src="{% static 'app_remline/js/remline/directiveGhVisualization.js' %}"></script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
