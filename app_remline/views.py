@@ -28,3 +28,7 @@ def modalNuevaHistoria(request):
 def modalNuevoSuceso(request):
     context = {}
     return render(request, 'app_remline/modalNuevoSuceso.html', context)
+
+def login(request):
+    context = {}
+    return render(request, 'app_remline/login.html', context)

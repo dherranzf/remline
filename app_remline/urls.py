@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'modalNuevaHistoria', views.modalNuevaHistoria, name='modalNuevaHistoria'),
     # /remline/modalNuevoSuceso
     url(r'modalNuevoSuceso', views.modalNuevoSuceso, name='modalNuevoSuceso'),
+    # /remline/login
+    url(r'login', views.login, name='login'),
 ]

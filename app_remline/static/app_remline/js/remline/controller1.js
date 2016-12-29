@@ -8,6 +8,25 @@ app.controller('controller1', ['$scope', '$http', '$uibModal', "$translate", fun
 
 	$scope.file = 'vacio';
 
+	 // Metodo para abrir la ventana modal de login
+	 $scope.login = function () {
+		    var uibModalInstance = $uibModal.open({
+		      animation: $scope.animationsEnabled,
+		      backdrop: 'static',
+		      keyboard: false,
+		      templateUrl: 'login.html',
+		      controller: 'loginController',
+		      resolve:{
+		    		refresh: function () {
+		    			return $scope;
+		    		}
+		    	}
+		    });
+
+	};
+	$scope.login();
+
+
 	$http.get("/api/historias/")
 		.then(function(respuesta){
 			console.log("res", respuesta);
