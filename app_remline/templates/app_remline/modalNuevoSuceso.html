@@ -8,11 +8,11 @@
 		<form class="form-horizontal" name="editForm">
 			  <div class="form-group">
 			    <label for="name" class="col-sm-4 col-xs-12 control-label">{/'_nombre' | translate/}</label>
-			    <div class="col-sm-8 col-xs-12"><input type="text" name="nombre" class="form-control" placeholder="Nombre" ng-model="item.nombre" required/></div>
+			    <div class="col-sm-8 col-xs-12"><input type="text" name="nombre" class="form-control" placeholder="{/'_nombre' | translate/}" ng-model="item.nombre" required/></div>
 			  </div>
 			  <div class="form-group">
 			    <label for="name" class="col-sm-4 col-xs-12 control-label">{/'_descripcion' | translate/}</label>
-			    <div class="col-sm-8 col-xs-12"><input type="text" class="form-control" placeholder="Descripcion" ng-model="item.descripcion" required/></div>
+			    <div class="col-sm-8 col-xs-12"><input type="text" class="form-control" placeholder="{/'_descripcion' | translate/}" ng-model="item.descripcion" required/></div>
 			  </div>
 			  <div class="form-group">
 				<label for="name" class="col-sm-4 col-xs-12 control-label">{/'_fecha' | translate/}</label>
@@ -28,14 +28,14 @@
 			  <div class="form-group">
 			    <label for="name" class="col-sm-4 col-xs-12 control-label" ng-mouseover="hoverTipo=true;" 
 					ng-mouseleave="hoverTipo=false;">{/'_tipo' | translate/}</label>
-			    <div class="col-sm-8 col-xs-12"><input type="text" class="form-control" placeholder="Tipo" ng-model="item.tipo" required/></div>
+			    <div class="col-sm-8 col-xs-12"><input type="text" class="form-control" placeholder="{/'_tipo' | translate/}" ng-model="item.tipo" required/></div>
 			  </div>
 			  <div class="form-group">
 			    		<label for="coste" class="col-sm-4 col-xs-12 control-label" ng-mouseover="hoverCoste=true;" 
 					ng-mouseleave="hoverCoste=false;">{/'_coste' | translate/}</label>
 					<span ng-show="hoverCoste" style="font-size:10px"><a>&nbsp;&nbsp;<strong>{/'_costeInfo' | translate/}</strong></a></span>
 			    <div class="col-sm-8 col-xs-12">
-				<select class="form-control" ng-model="item.coste" required>
+				<select class="form-control" ng-model="item.coste" placeholder="{/'_coste' | translate/}" required>
 					<option value="1">{/'_costeNormal' | translate/}</option>
 				 	<option value="2">{/'_costeImportante' | translate/}</option>							
 					<option value="3">{/'_costeMuyImportante' | translate/}</option>
@@ -45,7 +45,7 @@
 			    <label for="name" class="col-sm-4 col-xs-12 control-label" ng-mouseover="hoverUrl=true;" 
 					ng-mouseleave="hoverUrl=false;">{/'_media' | translate/}</label>
 					<span ng-show="hoverUrl" style="font-size:10px"><a>&nbsp;&nbsp;{/'_mediaInfo' | translate/} <strong>{/'_mediaInfo2' | translate/}</strong></a></span>
-			    <div class="col-sm-8 col-xs-12"><input type="text" class="form-control" placeholder="Url" ng-model="item.media" required/></div>
+			    <div class="col-sm-8 col-xs-12"><input type="text" class="form-control" placeholder="{/'_media' | translate/}" ng-model="item.media" required/></div>
 			  </div>
 
 			</form>

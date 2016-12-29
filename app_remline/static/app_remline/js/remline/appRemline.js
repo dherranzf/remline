@@ -63,7 +63,20 @@ var app = angular.module('appTest',['ui.bootstrap','ngRoute', 'pascalprecht.tran
     		"_eliminarSuceso" : "Eliminar Evento",
 		"_cargarArchivo" : "Cargar archivo",
 		"_botonManual" : "Introducir datos manualmente",
-		"_botonCSV" : "Desde archivo CSV"
+		"_botonCSV" : "Desde archivo CSV",
+		//login
+		"_login" : "Iniciar Sesión",
+		"_registrarse" : "Registrarse",
+		"_loginBoton" : "Iniciar",
+		"_registrarseBoton" : "Registrarse",
+		"_usuario" : "Usuario",
+		"_pass" : "Contraseña",
+		"_confirmPass" : "Confirmar contraseña",
+		"_recordarPass" : "¿Olvidaste tu contraseña?",
+		"_idiomaL" : "Idioma"
+
+
+
 
   	});
   	$translateProvider.translations('en',{
@@ -119,8 +132,17 @@ var app = angular.module('appTest',['ui.bootstrap','ngRoute', 'pascalprecht.tran
     		"_eliminarSuceso" : "Remove Event",
 		"_cargarArchivo" : "Upload file",
 		"_botonManual" : "Enter data manually",
-		"_botonCSV" : "From CSV file"
-
+		"_botonCSV" : "From CSV file",
+		//login
+		"_login" : "Login",
+		"_registrarse" : "Register",
+		"_loginBoton" : "Log In",
+		"_registrarseBoton" : "Register Now",
+		"_usuario" : "Username",
+		"_pass" : "Pass",
+		"_confirmPass" : "Confirm pass",
+		"_recordarPass" : "Forgot password?",
+		"_idiomaL" : "Language"
   	});
   	$translateProvider.preferredLanguage('es');
 });

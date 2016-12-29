@@ -1,34 +1,50 @@
+{% load staticfiles %}
+
 <div class="modal-body" >
 	<div class="panel panel-login">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-xs-6">
-								<a href="#" ng-style="style1"  ng-click="form_login='login'; style1={color:'#30b5f2'}; style2={color:'#666'};" id="login-form-link">Login</a>
+							<div class="col-sm-3 col-xs-12"/>
+							<div class="col-sm-3 col-xs-12">
+								<a href="#" ng-style="style1"  ng-click="form_login='login'; style1={color:'#30b5f2'}; style2={color:'#666'};" id="login-form-link">{/'_login' | translate/}</a>
 							</div>
-							<div class="col-xs-6">
-								<a href="#" ng-style="style2"  ng-click="form_login='register'; style1={color:'#666'}; style2={color:'#30b5f2'};" id="register-form-link">Register</a>
+							<div class="col-sm-3 col-xs-12">
+								<a href="#" ng-style="style2"  ng-click="form_login='register'; style1={color:'#666'}; style2={color:'#30b5f2'};" id="register-form-link">{/'_registrarse' | translate/}</a>
+							</div>
+							<div class="col-sm-3 col-xs-12" class="btn-group" uib-dropdown is-open="status.isopen">
+      							<button id="single-button" type="button" class="btn btn-default pull-right" uib-dropdown-toggle ng-disabled="disabled">
+        						{/'_idiomaL' | translate/} <span class="caret"></span>
+      							</button>
+								  <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+									  <li role="menuitem" ng-click="cambiarIdioma('es')">
+										  <a href="#" onclick="return false;"><img src="{% static 'app_remline/images/es.png' %}"
+							style="max-height: 12px">&nbsp;&nbsp;&nbsp;Español</a>
+									  </li>
+									  <li role="menuitem" ng-click="cambiarIdioma('en')">
+									  	<a href="#" onclick="return false;"><img src="{% static 'app_remline/images/en.jpeg' %}"
+							style="max-height: 12px">&nbsp;&nbsp;&nbsp;English</a>
+									  </li>
+								  </ul>
 							</div>
 						</div>
 						<hr>
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-lg-12">
-								<form id="login-form" ng-show="form_login==='login'"  role="form" >
+							<div class="col-sm-12">
+								<div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')"
+									 close="closeAlert($index)" dismiss-on-timeout="5000">{/alert.msg/}</div>
+								<form  name="formLogin"  role="form" ng-show="form_login==='login'">
 									<div class="form-group">
-										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+										<input type="text" name="username" class="placeholder form-control" placeholder="{/'_usuario' | translate/}" ng-model="usuarioLogin.nombre" required />
 									</div>
 									<div class="form-group">
-										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
-									</div>
-									<div class="form-group text-center">
-										<input type="checkbox" tabindex="3" class="" name="remember" id="remember">
-										<label for="remember"> Remember Me</label>
+										<input type="password" name="password" class="form-control" placeholder="{/'_pass' | translate/}" ng-model="usuarioLogin.pass" required/>
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+												<button type="button" class="btn btn-login" ng-click="login()"  style="width: 250px" ng-disabled="formLogin.$invalid">{/'_loginBoton' | translate/}</button>
 											</div>
 										</div>
 									</div>
@@ -36,29 +52,29 @@
 										<div class="row">
 											<div class="col-lg-12">
 												<div class="text-center">
-													<a href="http://phpoll.com/recover" tabindex="5" class="forgot-password">Forgot Password?</a>
+													<a href="http://" class="forgot-password">{/'_recordarPass' | translate/}</a>
 												</div>
 											</div>
 										</div>
 									</div>
 								</form>
-								<form id="register-form"  ng-show="form_login==='register'" >
+								<form name="formRegister" role="form" ng-show="form_login==='register'" >
 									<div class="form-group">
-										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+										<input type="text" name="username2" class="form-control" placeholder="{/'_usuario' | translate/}" ng-model="usuarioNuevo.nombre" required />
 									</div>
 									<div class="form-group">
-										<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+										<input type="email" name="email" class="form-control" placeholder="Email" ng-model="usuarioNuevo.email"  required/>
 									</div>
 									<div class="form-group">
-										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+										<input type="password" name="password2" class="form-control" placeholder="{/'_pass' | translate/}" ng-model="usuarioNuevo.pass" required  />
 									</div>
 									<div class="form-group">
-										<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
+										<input type="password" name="passwordConfirm" class="form-control" placeholder="{/'_confirmPass' | translate/}" ng-model="usuarioNuevo.passConfirm" required />
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+												<button type="button" class="btn btn-login" ng-click="register()" style="width: 250px" ng-disabled="formRegister.$invalid">{/'_registrarseBoton' | translate/}</button>
 											</div>
 										</div>
 									</div>

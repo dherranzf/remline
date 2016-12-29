@@ -319,14 +319,14 @@ p {
 }
 
 .form-control::-moz-placeholder {
-  color: #ffffff;
+  color: #red;
   opacity: 1;
 }
 .form-control:-ms-input-placeholder {
-  color: #ffffff;
+  color: #red;
 }
 .form-control::-webkit-input-placeholder {
-  color: #ffffff;
+  color: #red;
 }
 
 #contact .contact-detail {
@@ -660,7 +660,7 @@ div.tooltip {
 	border-color: #ccc;
 }
 .btn-login {
-	background-color: #59B2E0;
+	background-color: #30b5f2;
 	outline: none;
 	color: #fff;
 	font-size: 14px;
@@ -686,26 +686,13 @@ div.tooltip {
 	color: #666;
 }
 
-.btn-register {
-	background-color: #1CB94E;
-	outline: none;
-	color: #fff;
-	font-size: 14px;
-	height: auto;
-	font-weight: normal;
-	padding: 14px 0;
-	text-transform: uppercase;
-	border-color: #1CB94A;
-}
-.btn-register:hover,
-.btn-register:focus {
-	color: #fff;
-	background-color: #1CA347;
-	border-color: #1CA347;
-}
 
 .style1 {
 	color: red;
 
+}
+
+.placeholder {
+    color: gray;
 }
 
