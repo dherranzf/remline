@@ -1,1 +1,3 @@
-ARCHIVO README DEL PROYECTO REMLINE
+#RemLine
+
+Generación de mapas visuales temporales mediante una arquitectura software de servidor
