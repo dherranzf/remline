@@ -43,12 +43,29 @@ INSTALLED_APPS = [
 #OTRAS APLICACIONES
     'rest_framework',
     'corsheaders',
+#AUTENTICACION
+    'rest_auth',
+    'rest_framework.authtoken',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_auth.registration',
 ]
 
+#Sitio creado por defecto para autenticacion
+SITE_ID = 1
+
+#Para registros en entorno de DESARROLLO (desactivamos email)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 REST_FRAMEWORK = {
+    #para solo permitir llamadas a la api de usuarios identificados
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
+    #para indicar que el tipo de autenticacion es por Token
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.TokenAuthentication',),
     #con esta configuracion desactivo el visor por defecto de rest_framework en el sistema
-    'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
+    #'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
 }
 
 

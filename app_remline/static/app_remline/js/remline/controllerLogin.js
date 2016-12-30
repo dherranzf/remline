@@ -8,8 +8,8 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
     $scope.form_login="login";
     $scope.style1={color:'#30b5f2'};
 
-	$scope.usuarioLogin = {nombre: "", pass: ""}
-	$scope.usuarioNuevo = {nombre: "", email:"", pass: "", passConfirm: ""}
+	$scope.usuarioLogin = {username: "", password: "", email:"pepe@pepe.com"}
+	$scope.usuarioNuevo = {username: "", email:"", password1: "", password2: ""}
 
 
     $scope.alerts = [
@@ -32,18 +32,27 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
 
 	$scope.login = function (id) {
 
-         $scope.addAlert('danger', 'Login Fallido');
+				$http.post("/api/rest-auth/login/", $scope.usuarioLogin)
+				.then(function(respuesta){
+					console.log("Login OK", respuesta);
+				    $uibModalInstance.dismiss('cancel');
 
-	    $uibModalInstance.dismiss('cancel');
+				}, function(respuesta){
+					console.log("Login ERROR", respuesta);
+					$scope.addAlert('danger', "Error!! " + respuesta.status);
+				});
 
 	}
 
 
 	$scope.register = function (id) {
 
-
-
-	    $uibModalInstance.dismiss('cancel');
+        if($scope.usuarioNuevo.passConfirm != $scope.usuarioNuevo.pass){
+                 $scope.addAlert('danger', 'Confirma correctamente tu contraseña');
+        }
+        else{
+        	    $uibModalInstance.dismiss('cancel');
+        }
 
 	}
 	

@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^sucesos/(?P<pk>[0-9]+)$', views.sucesos_detail),
     url(r'^historias/$', views.historias_list),
     url(r'^historias/(?P<pk>[0-9]+)$', views.historias_detail),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

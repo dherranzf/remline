@@ -36,10 +36,10 @@
 									 close="closeAlert($index)" dismiss-on-timeout="5000">{/alert.msg/}</div>
 								<form  name="formLogin"  role="form" ng-show="form_login==='login'">
 									<div class="form-group">
-										<input type="text" name="username" class="placeholder form-control" placeholder="{/'_usuario' | translate/}" ng-model="usuarioLogin.nombre" required />
+										<input type="text" name="username" class="placeholder form-control" placeholder="{/'_usuario' | translate/}" ng-model="usuarioLogin.username" required />
 									</div>
 									<div class="form-group">
-										<input type="password" name="password" class="form-control" placeholder="{/'_pass' | translate/}" ng-model="usuarioLogin.pass" required/>
+										<input type="password" name="password" class="form-control" placeholder="{/'_pass' | translate/}" ng-model="usuarioLogin.password" required/>
 									</div>
 									<div class="form-group">
 										<div class="row">
@@ -60,16 +60,16 @@
 								</form>
 								<form name="formRegister" role="form" ng-show="form_login==='register'" >
 									<div class="form-group">
-										<input type="text" name="username2" class="form-control" placeholder="{/'_usuario' | translate/}" ng-model="usuarioNuevo.nombre" required />
+										<input type="text" name="username2" class="form-control" placeholder="{/'_usuario' | translate/}" ng-model="usuarioNuevo.username" required />
 									</div>
 									<div class="form-group">
 										<input type="email" name="email" class="form-control" placeholder="Email" ng-model="usuarioNuevo.email"  required/>
 									</div>
 									<div class="form-group">
-										<input type="password" name="password2" class="form-control" placeholder="{/'_pass' | translate/}" ng-model="usuarioNuevo.pass" required  />
+										<input type="password" name="password2" class="form-control" placeholder="{/'_pass' | translate/}" ng-model="usuarioNuevo.password1" required  />
 									</div>
 									<div class="form-group">
-										<input type="password" name="passwordConfirm" class="form-control" placeholder="{/'_confirmPass' | translate/}" ng-model="usuarioNuevo.passConfirm" required />
+										<input type="password" name="passwordConfirm" class="form-control" placeholder="{/'_confirmPass' | translate/}" ng-model="usuarioNuevo.password2" required />
 									</div>
 									<div class="form-group">
 										<div class="row">
