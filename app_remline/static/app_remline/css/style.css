@@ -319,14 +319,14 @@ p {
 }
 
 .form-control::-moz-placeholder {
-  color: #red;
+  /*color: #no;*/
   opacity: 1;
 }
 .form-control:-ms-input-placeholder {
-  color: #red;
+  /*color: #no;*/
 }
 .form-control::-webkit-input-placeholder {
-  color: #red;
+  /*color: #no;*/
 }
 
 #contact .contact-detail {
@@ -680,11 +680,7 @@ div.tooltip {
 	text-decoration: underline;
 	color: #888;
 }
-.forgot-password:hover,
-.forgot-password:focus {
-	text-decoration: underline;
-	color: #666;
-}
+
 
 
 .style1 {
@@ -695,4 +691,6 @@ div.tooltip {
 .placeholder {
     color: gray;
 }
+
+
 

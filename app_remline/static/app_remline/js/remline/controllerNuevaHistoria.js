@@ -2,9 +2,9 @@
 //Controlador para nuevas historias
 //----------------------------------------------------------------------------------------------------------------------------
 
-app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,  refresh) {
+app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,  refresh, $auth) {
 	
-	$scope.item = {nombre: "", descripcion: ""}
+	$scope.item = {nombre: "", descripcion: "", propietario:refresh.usuario.username}
 	$scope.tipoEntradaDatos="decidir";//decidir,manual,csv
 	var noDismiss= false;//para no cerrar la venta modal si no queremos
 
@@ -15,6 +15,8 @@ app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,
 				.then(function(respuesta){
 					console.log("POST historias OK", respuesta);
 					refresh.sucesos=[];
+			    	refresh.alerts.push({type: 'success',msg: 'Nueva historia creada'});
+
 				}, function(respuesta){
 					console.log("Error POST historias", respuesta);
 					refresh.historias = [{name: "Error!! " + respuesta.status}];
@@ -23,7 +25,7 @@ app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,
 		  }
 		  $scope.loadData();
 
-		  $http.get("/api/historias/")
+		  $http.get("/api/historias/"+refresh.usuario.username)
 			.then(function(respuesta){
 				console.log("res", respuesta);
 				refresh.historias = respuesta.data;
@@ -63,7 +65,7 @@ app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,
 					console.log("POST historias OK", respuesta);
 					refresh.sucesos=[];
 					//obtenemos id de historia
-					  $http.get("/api/historias/")
+					  $http.get("/api/historias/"+refresh.usuario.username)
 						.then(function(respuesta){
 							console.log("res", respuesta);
 							refresh.historias = respuesta.data;
@@ -101,6 +103,7 @@ app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,
 											.then(function(respuesta){
 												console.log("GET sucesos OK", respuesta);
 												refresh.sucesos = respuesta.data;
+												refresh.alerts.push({type: 'success',msg: 'Nueva historia creada'});
 											}, function(respuesta){
 												console.log("Error GET sucesos", respuesta);
 												refresh.sucesos = [{name: "Error!! " + respuesta.status}];

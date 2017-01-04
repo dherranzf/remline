@@ -10,4 +10,4 @@ class SucesoSerializer(ModelSerializer):
 class HistoriaSerializer(ModelSerializer):
     class Meta:
         model = Historia
-        fields = ('id', 'nombre', 'descripcion')
+        fields = ('id', 'nombre', 'descripcion', 'propietario')

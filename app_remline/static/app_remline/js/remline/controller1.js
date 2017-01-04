@@ -1,12 +1,23 @@
 //
 
-app.controller('controller1', ['$scope', '$http', '$uibModal', "$translate", function($scope, $http, $uibModal,$translate){
+app.controller('controller1', ['$scope', '$http', '$uibModal', "$translate", "$auth", function($scope, $http, $uibModal,$translate, $auth){
 	$scope.historiaSeleccionada = null;
 	$scope.sucesoSelecc = "";
 	$scope.sucesos = null;
 	$scope.fechaFormateada= null;
+	$scope.usuario= {username: "No logueado", password: "", email:""};
 
 	$scope.file = 'vacio';
+
+	$scope.alerts = [/*{type: "success",msg: 'Probando opacidad'}*/];
+    $scope.addAlert = function(t, m) {
+    	//success(verde), info(azul), warning(amarillo), danger(rojo)
+        $scope.alerts.push({type: t,msg: m});
+    };
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+    };
+
 
 	 // Metodo para abrir la ventana modal de login
 	 $scope.login = function () {
@@ -26,15 +37,6 @@ app.controller('controller1', ['$scope', '$http', '$uibModal', "$translate", fun
 	};
 	$scope.login();
 
-
-	$http.get("/api/historias/")
-		.then(function(respuesta){
-			console.log("res", respuesta);
-			$scope.historias = respuesta.data;
-		}, function(respuesta){
-			console.log("Error GET historias", respuesta);
-			$scope.historias = [{name: "Error!! " + respuesta.status}];
-	});
 
 	$scope.sucesos_por_historia = function (id) {
 		$scope.sucesoSelecc = "";
@@ -63,6 +65,26 @@ app.controller('controller1', ['$scope', '$http', '$uibModal', "$translate", fun
    		$translate.use(lang); 
   	}
 
+  	$scope.logout = function(){
+   		console.log("Logout del usuario", $scope.usuario.username);
+   		$scope.usuario = {username: "No logueado", password: "", email:""};
+
+   		//se realiza el logout con peticion hacia el back,
+   		//ya que satellizer no la hace(como si sucede en los login o signin)
+   		$http.post("/api/rest-auth/logout/", {})
+		    .then(function(respuesta){
+					console.log("Logout rest-auth OK", respuesta);
+                    $auth.logout()
+                        .then(function() {
+                         console.log("Logout satellizer OK");
+                    });
+			}, function(respuesta){
+					console.log("Logout ERROR", respuesta);
+					$scope.addAlert('danger', "Error logout - " + respuesta.status);
+		});
+
+        $scope.login();
+  	}
 
 
 	  // Metodo para abrir la ventana modal de nueva historia

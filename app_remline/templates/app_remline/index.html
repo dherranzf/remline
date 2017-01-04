@@ -80,6 +80,13 @@ http://www.tooplate.com/view/2077-modern-town
 							style="max-height: 12px">&nbsp;&nbsp;&nbsp;English</a></li>
 					</ul>
 				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> {/usuario.username/}<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+					<li ng-click="logout()">
+						<a href="#">Cerrar sesión</a></li>
+					</ul>
+				</li>
 			</ul>	
 		</div>
 	
@@ -92,7 +99,12 @@ http://www.tooplate.com/view/2077-modern-town
 	<div class="row" style="height:20px;">
 	</div>
 	<div class="container">
-	
+
+		<div uib-alert class="row fadeInDown wow"
+			 style="margin-top: 5px; z-index: 1; position:absolute; filter:alpha(opacity=30); opacity:0.3; width:300px;
+		margin-left:auto; margin-right:auto; left:0; right:0;" data-wow-delay="0.4s" ng-repeat="alert in alerts"
+			 ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)" dismiss-on-timeout="5000" >{/alert.msg/}</div>
+
 		<div class="row fadeInDown wow box-blue fondo1" style=" padding: 0; margin-bottom: 15px;" data-wow-delay="0.4s" >
 				<div class="col-md-4 col-sm-4"  style="border-right: 1px solid #31708f; border-bottom: 1px solid #31708f; height:250px; margin: 0;">
 					<div style="height:170px; margin-top: 30px;">
@@ -141,18 +153,12 @@ http://www.tooplate.com/view/2077-modern-town
 					</div>
 				</div>
 		</div>
-       		<div class="row fadeInDown wow box-blue fondo2" style="height:300px; overflow-x: auto;" data-wow-delay="0.6s">    
+		<div class="row fadeInDown wow box-blue fondo2" style="height:300px; overflow-x: auto;" data-wow-delay="0.6s">
 			
-<gh-visualization ng-show="sucesos != null && sucesos.length > 0" val="sucesos" suceso="sucesoSelecc"></gh-visualization>
+			<gh-visualization ng-show="sucesos != null && sucesos.length > 0" val="sucesos" suceso="sucesoSelecc"></gh-visualization>
 
 			<div ng-show="sucesos === null || sucesos.length == 0" style="display: block; margin: auto; height30px; width:500px"><h4>{/'_noDibujo' | translate/}</h4></div>
 	 	</div>
-		 <div class="row" style="height:200px;">
-					<div>Nº de sucesos: {/sucesos.length/}</div>
-					<div ng-repeat="suceso in sucesos">
-						<div>{/suceso/}</div>
-					</div>		
-		 </div>
 	</div>
 </section>
 
@@ -259,7 +265,7 @@ http://www.tooplate.com/view/2077-modern-town
 <script src="{% static 'app_remline/js/remline/directiveCsvReader.js' %}"></script>
 <script src="{% static 'app_remline/js/remline/directiveGhVisualization.js' %}"></script>
 
-
+<script src="https://cdn.jsdelivr.net/satellizer/0.15.5/satellizer.min.js"></script>
 
 
 

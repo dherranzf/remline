@@ -39,6 +39,9 @@
 										<input type="text" name="username" class="placeholder form-control" placeholder="{/'_usuario' | translate/}" ng-model="usuarioLogin.username" required />
 									</div>
 									<div class="form-group">
+										<input type="email" name="email" class="form-control" placeholder="Email" ng-model="usuarioLogin.email"  required/>
+									</div>
+									<div class="form-group">
 										<input type="password" name="password" class="form-control" placeholder="{/'_pass' | translate/}" ng-model="usuarioLogin.password" required/>
 									</div>
 									<div class="form-group">
@@ -51,8 +54,8 @@
 									<div class="form-group">
 										<div class="row">
 											<div class="col-lg-12">
-												<div class="text-center">
-													<a href="http://" class="forgot-password">{/'_recordarPass' | translate/}</a>
+												<div class="text-center" ng-click="recordar()">
+													<a href="#" onclick="return false;" class="forgot-password">{/'_recordarPass' | translate/}</a>
 												</div>
 											</div>
 										</div>
@@ -63,7 +66,7 @@
 										<input type="text" name="username2" class="form-control" placeholder="{/'_usuario' | translate/}" ng-model="usuarioNuevo.username" required />
 									</div>
 									<div class="form-group">
-										<input type="email" name="email" class="form-control" placeholder="Email" ng-model="usuarioNuevo.email"  required/>
+										<input type="email" name="email2" class="form-control" placeholder="Email" ng-model="usuarioNuevo.email"  required/>
 									</div>
 									<div class="form-group">
 										<input type="password" name="password2" class="form-control" placeholder="{/'_pass' | translate/}" ng-model="usuarioNuevo.password1" required  />
@@ -75,6 +78,27 @@
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
 												<button type="button" class="btn btn-login" ng-click="register()" style="width: 250px" ng-disabled="formRegister.$invalid">{/'_registrarseBoton' | translate/}</button>
+											</div>
+										</div>
+									</div>
+								</form>
+								<form name="formRecordar" role="form" ng-show="form_login==='recordar'" >
+									<div class="form-group">
+										<input type="text" name="uid" class="form-control" placeholder="UID" ng-model="recordarPass.uid" required />
+									</div>
+									<div class="form-group">
+										<input type="text" name="token" class="form-control" placeholder="Token" ng-model="recordarPass.token"  required/>
+									</div>
+									<div class="form-group">
+										<input type="password" name="password3" class="form-control" placeholder="{/'_pass' | translate/}" ng-model="recordarPass.new_password1" required  />
+									</div>
+									<div class="form-group">
+										<input type="password" name="passwordConfirm3" class="form-control" placeholder="{/'_confirmPass' | translate/}" ng-model="recordarPass.new_password2" required />
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<button type="button" class="btn btn-login" ng-click="recordarConfirm()" style="width: 250px" ng-disabled="formRecordar.$invalid">{/'_aceptar' | translate/}</button>
 											</div>
 										</div>
 									</div>

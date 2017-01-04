@@ -18,7 +18,7 @@ app.controller('modalModificarHistoria', function ($scope, $http, $uibModalInsta
 					//refresh.historias = [{name: "Error!! " + respuesta.status}];
 				});
 
-				  $http.get("/api/historias/")
+				  $http.get("/api/historias/"+refresh.usuario.username)
 					.then(function(respuesta){
 						console.log("res", respuesta);
 						refresh.historias = respuesta.data;
@@ -49,7 +49,7 @@ app.controller('modalModificarHistoria', function ($scope, $http, $uibModalInsta
 					//refresh.historias = [{name: "Error!! " + respuesta.status}];
 				});
 
-				  $http.get("/api/historias/")
+				  $http.get("/api/historias/"+refresh.usuario.username)
 					.then(function(respuesta){
 						console.log("res", respuesta);
 						refresh.historias = respuesta.data;

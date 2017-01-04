@@ -1,5 +1,5 @@
-var app = angular.module('appTest',['ui.bootstrap','ngRoute', 'pascalprecht.translate'])  
-   .config(function ($interpolateProvider, $httpProvider, $translateProvider) {
+var app = angular.module('appTest',['ui.bootstrap','ngRoute', 'pascalprecht.translate', 'satellizer'])
+   .config(function ($interpolateProvider, $httpProvider, $translateProvider, $authProvider) {
 	//cambio de simbolos scope
    	$interpolateProvider.startSymbol('{/');
   	$interpolateProvider.endSymbol('/}');
@@ -7,6 +7,15 @@ var app = angular.module('appTest',['ui.bootstrap','ngRoute', 'pascalprecht.tran
 	//csrftoken en la cabeceras
 	$httpProvider.defaults.xsrfCookieName = 'csrftoken';
 	$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+    //satellizer, autenticacion por token
+    $authProvider.loginUrl = "/api/rest-auth/login/";
+    $authProvider.signupUrl = "/api/rest-auth/registration/";
+    $authProvider.tokenName = "Token";
+    $authProvider.tokenPrefix = "appTest";
+    $authProvider.tokenHeader = 'Authorization';
+    $authProvider.tokenType = 'Token';
+    $authProvider.httpInterceptor = true;
 
 	//translate
 	$translateProvider.translations('es',{
