@@ -20,7 +20,23 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'bb=w0nbm*r1elud*se=a#cwf=tx1-4=jqvq5w*dqw537^pmw4b'
+#SECRET_KEY = 'bb=w0nbm*r1elud*se=a#cwf=tx1-4=jqvq5w*dqw537^pmw4b'
+try:
+    SECRET_KEY
+except NameError:
+    SECRET_FILE = os.path.join(BASE_DIR, 'secret.txt')
+    try:
+        SECRET_KEY = open(SECRET_FILE).read().strip()
+    except IOError:
+        try:
+            import random
+            SECRET_KEY = ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
+            secret = file(SECRET_FILE, 'w')
+            secret.write(SECRET_KEY)
+            secret.close()
+        except IOError:
+            Exception('Please create a %s file with random characters \
+            to generate your secret key!' % SECRET_FILE)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -57,7 +73,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 #Para registros en entorno de DESARROLLO (desactivamos email)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 REST_FRAMEWORK = {
     #para solo permitir llamadas a la api de usuarios identificados
@@ -65,7 +81,7 @@ REST_FRAMEWORK = {
     #para indicar que el tipo de autenticacion es por Token
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.TokenAuthentication',),
     #con esta configuracion desactivo el visor por defecto de rest_framework en el sistema
-    #'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
+    'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
 }
 
 
@@ -154,7 +170,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 
 
 #Para permitir a nginx servir archivos estaticos directamente
-##STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+###STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 #* ejecutar ./manage.py collectstatic
 
 

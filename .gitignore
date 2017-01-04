@@ -1,3 +1,5 @@
 .idea/
+secret.txt
 *.pyc
 README.md~
+.gitignore~
