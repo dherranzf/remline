@@ -3,7 +3,7 @@
 //Controlador para login
 //----------------------------------------------------------------------------------------------------------------------------
 
-app.controller('loginController', function ($scope, $http, $uibModalInstance, refresh, $translate, $auth) {
+app.controller('loginController', function ($scope, $http, $uibModalInstance, refresh, $translate, $filter, $auth) {
 
     $scope.form_login="login";
     $scope.style1={color:'#30b5f2'};
@@ -51,7 +51,7 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
             })
             .catch(function(respuesta){
                 console.log("Login ERROR", respuesta);
-                $scope.addAlert('danger', "Usuario o contraseña incorrectos - " + respuesta.status);
+                $scope.addAlert('danger', $filter('translate')('_alertLogin') + respuesta.status);
 
             });
 
@@ -74,7 +74,7 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
 	$scope.register = function (id) {
 
         if($scope.usuarioNuevo.passConfirm != $scope.usuarioNuevo.pass){
-                 $scope.addAlert('danger', 'Las contraseñas no coinciden');
+                 $scope.addAlert('danger', $filter('translate')('_alertRegistro'));
 
         }else{
 
@@ -84,11 +84,11 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
                     console.log("Registro OK");
                     console.log("guardar token",req);
 					$auth.setToken(req.data.key)
-					$scope.addAlert('success', 'Usuario registrado correctamente');
+					$scope.addAlert('success', $filter('translate')('_alertRegistro2'));
                 })
                 .catch(function(respuesta) {
 					console.log("Registro ERROR", respuesta);
-					$scope.addAlert('danger', "Error de registro - " + respuesta.status);
+					$scope.addAlert('danger', $filter('translate')('_alertRegistro3') + respuesta.status);
 			    });
 
         		/*$http.post("/api/rest-auth/registration/", $scope.usuarioNuevo)
@@ -108,7 +108,7 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
 	$scope.recordar = function () {
 
                 if($scope.usuarioLogin.email==""){
-                       $scope.addAlert('danger', "Introduce al menos tu email");
+                       $scope.addAlert('danger', $filter('translate')('_alertResetPass'));
                 } else{
 
                     var emailRecordar = {email:""}
@@ -116,13 +116,13 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
                     $http.post("/api/rest-auth/password/reset/", emailRecordar)
                     .then(function(respuesta){
                         console.log("Recordar contraseña OK", respuesta);
-                        $scope.addAlert('success', 'Se ha enviado un email a su correo');
+                        $scope.addAlert('success',$filter('translate')('_alertResetPass2'));
                         $scope.form_login="recordar";
 
 
                     }, function(respuesta){
                         console.log("Recordar contraseña ERROR", respuesta);
-                        $scope.addAlert('danger', "Error reset pass- " + respuesta.status);
+                        $scope.addAlert('danger',$filter('translate')('_alertResetPass3') + respuesta.status);
                     });
 
                 }
@@ -133,11 +133,11 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
                 $http.post("/api/rest-auth/password/reset/confirm/", $scope.recordarPass)
 				.then(function(respuesta){
 					console.log("Confirmar recordar contraseña OK", respuesta);
-					$scope.addAlert('success', 'Nueva contraseña guardada');
+					$scope.addAlert('success', $filter('translate')('_alertResetConfirmPass1'));
 
 				}, function(respuesta){
 					console.log("Confirmar recordar  contraseña ERROR", respuesta);
-					$scope.addAlert('danger', "Error confirm rest pass - " + respuesta.status);
+					$scope.addAlert('danger', $filter('translate')('_alertResetConfirmPass2') + respuesta.status);
 				});
 
 

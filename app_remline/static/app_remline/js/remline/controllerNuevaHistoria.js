@@ -2,7 +2,7 @@
 //Controlador para nuevas historias
 //----------------------------------------------------------------------------------------------------------------------------
 
-app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,  refresh, $auth) {
+app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance, $translate, $filter, refresh, $auth) {
 	
 	$scope.item = {nombre: "", descripcion: "", propietario:refresh.usuario.username}
 	$scope.tipoEntradaDatos="decidir";//decidir,manual,csv
@@ -15,7 +15,7 @@ app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,
 				.then(function(respuesta){
 					console.log("POST historias OK", respuesta);
 					refresh.sucesos=[];
-			    	refresh.alerts.push({type: 'success',msg: 'Nueva historia creada'});
+			    	refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertNHistoria')});
 
 				}, function(respuesta){
 					console.log("Error POST historias", respuesta);
@@ -103,7 +103,7 @@ app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,
 											.then(function(respuesta){
 												console.log("GET sucesos OK", respuesta);
 												refresh.sucesos = respuesta.data;
-												refresh.alerts.push({type: 'success',msg: 'Nueva historia creada'});
+			    	                            refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertNHistoria')});
 											}, function(respuesta){
 												console.log("Error GET sucesos", respuesta);
 												refresh.sucesos = [{name: "Error!! " + respuesta.status}];

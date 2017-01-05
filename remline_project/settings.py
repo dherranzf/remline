@@ -170,7 +170,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 
 
 #Para permitir a nginx servir archivos estaticos directamente
-###STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 #* ejecutar ./manage.py collectstatic
 
 

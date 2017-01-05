@@ -82,10 +82,24 @@ var app = angular.module('appTest',['ui.bootstrap','ngRoute', 'pascalprecht.tran
 		"_pass" : "Contraseña",
 		"_confirmPass" : "Confirmar contraseña",
 		"_recordarPass" : "¿Olvidaste tu contraseña?",
-		"_idiomaL" : "Idioma"
-
-
-
+		"_idiomaL" : "Idioma",
+        //alertas
+		"_alertNHistoria" : "Nueva historia creada",
+		"_alertMHistoria" : "Historia modificada",
+		"_alertEHistoria" : "Historia eliminada",
+		"_alertNSuceso" : "Nuevo evento creado",
+		"_alertMSuceso" : "Evento modificado",
+		"_alertESuceso" : "Evento eliminado",
+		"_alertErrorPeticion" : "Error en la petición",
+		"_alertLogin" : "Datos incorrectos",
+		"_alertRegistro" : "Las contraseñas no coinciden",
+		"_alertRegistro2" : "Usuario registrado correctamente",
+		"_alertRegistro3" : "Error de registro - ",
+		"_alertResetPass" : "Introduce al menos tu email",
+ 		"_alertResetPass2" : "Se ha enviado un email a su correo",
+		"_alertResetPass3" : "Error recordar contraseña - ",
+		"_alertResetConfirmPass1" : "Nueva contraseña guardada",
+		"_alertResetConfirmPass2" : "Error confirmar recordar contraseña - "
 
   	});
   	$translateProvider.translations('en',{
@@ -151,7 +165,24 @@ var app = angular.module('appTest',['ui.bootstrap','ngRoute', 'pascalprecht.tran
 		"_pass" : "Pass",
 		"_confirmPass" : "Confirm pass",
 		"_recordarPass" : "Forgot password?",
-		"_idiomaL" : "Language"
+		"_idiomaL" : "Language",
+		//alertas
+		"_alertNHistoria" : "New history created",
+		"_alertMHistoria" : "History modified",
+		"_alertEHistoria" : "History deleted",
+		"_alertNSuceso" : "New evento created",
+		"_alertMSuceso" : "Event modified",
+		"_alertESuceso" : "Event deleted",
+		"_alertErrorPeticion" : "Request failed",
+		"_alertLogin" : "Incorrect data",
+		"_alertRegistro" : "Passwords do not match",
+		"_alertRegistro2" : "Registered user correctly",
+		"_alertRegistro3" : "Error register - ",
+		"_alertResetPass" : "Enter your email at least",
+ 		"_alertResetPass2" : "An email has been sent to your mailbox",
+		"_alertResetPass3" : "Error reset pass - ",
+		"_alertResetConfirmPass1" : "New password saved",
+		"_alertResetConfirmPass2" : "Error confirm reset pass - "
   	});
   	$translateProvider.preferredLanguage('es');
 });

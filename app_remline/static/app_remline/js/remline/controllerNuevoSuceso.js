@@ -3,7 +3,7 @@
 //Controlador para nuevos de sucesos
 //----------------------------------------------------------------------------------------------------------------------------
 
-app.controller('modalNuevoSuceso', function ($scope, $http, $uibModalInstance, refresh) {
+app.controller('modalNuevoSuceso', function ($scope, $http, $uibModalInstance, $translate, $filter, refresh) {
 
 	$scope.item = {nombre: "", descripcion: "", fecha: "", tipo: "", coste: "", media: "http://www.", historia: ""}
 
@@ -39,6 +39,8 @@ app.controller('modalNuevoSuceso', function ($scope, $http, $uibModalInstance, r
 			  $http.post("/api/sucesos/", $scope.item)
 				.then(function(respuesta){
 					console.log("POST sucesos OK", respuesta);
+					refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertNSuceso')});
+
 				}, function(respuesta){
 					console.log("Error POST sucesos", respuesta);
 					refresh.sucesos = [{name: "Error!! " + respuesta.status}];

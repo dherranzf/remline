@@ -98,7 +98,7 @@ http://www.tooplate.com/view/2077-modern-town
 <section id="remline" class="paralla-section">
 	<div class="row" style="height:20px;">
 	</div>
-	<div class="container">
+	<div class="container" style="width: auto; max-width: 2400px; margin-right:10%; margin-left:10%;">
 
 		<div uib-alert class="row fadeInDown wow"
 			 style="margin-top: 5px; z-index: 1; position:absolute; filter:alpha(opacity=30); opacity:0.3; width:300px;
@@ -153,12 +153,14 @@ http://www.tooplate.com/view/2077-modern-town
 					</div>
 				</div>
 		</div>
-		<div class="row fadeInDown wow box-blue fondo2" style="height:300px; overflow-x: auto;" data-wow-delay="0.6s">
+		<div id="chart" class="row fadeInDown wow box-blue fondo2 jumbotron" style="height:300px; overflow-x: auto; width: auto;" data-wow-delay="0.6s">
 			
-			<gh-visualization ng-show="sucesos != null && sucesos.length > 0" val="sucesos" suceso="sucesoSelecc"></gh-visualization>
+			<gh-visualization ng-show="sucesos != null && sucesos.length > 0" val="sucesos" suceso="sucesoSelecc" style="overflow-x: auto; width:95%; margin:auto;"></gh-visualization>
 
 			<div ng-show="sucesos === null || sucesos.length == 0" style="display: block; margin: auto; height30px; width:500px"><h4>{/'_noDibujo' | translate/}</h4></div>
 	 	</div>
+		<div class="row" style="height:200px;">
+		 </div>
 	</div>
 </section>
 

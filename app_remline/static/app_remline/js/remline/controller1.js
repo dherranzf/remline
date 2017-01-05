@@ -1,11 +1,11 @@
 //
 
-app.controller('controller1', ['$scope', '$http', '$uibModal', "$translate", "$auth", function($scope, $http, $uibModal,$translate, $auth){
+app.controller('controller1', ['$scope', '$http', '$uibModal', "$translate", "$filter", "$auth", function($scope, $http, $uibModal, $translate, $filter, $auth){
 	$scope.historiaSeleccionada = null;
 	$scope.sucesoSelecc = "";
 	$scope.sucesos = null;
 	$scope.fechaFormateada= null;
-	$scope.usuario= {username: "No logueado", password: "", email:""};
+	$scope.usuario= {username: "No login", password: "", email:""};
 
 	$scope.file = 'vacio';
 
@@ -45,6 +45,7 @@ app.controller('controller1', ['$scope', '$http', '$uibModal', "$translate", "$a
 				console.log("res", respuesta);
 				$scope.sucesos = respuesta.data;
 			}, function(respuesta){
+			    $scope.alerts.push({type: 'danger',msg: 'Error get sucesos'});
 				$scope.sucesos = [{name: "Error!! " + respuesta.status}];
 		});
 	}
@@ -67,13 +68,19 @@ app.controller('controller1', ['$scope', '$http', '$uibModal', "$translate", "$a
 
   	$scope.logout = function(){
    		console.log("Logout del usuario", $scope.usuario.username);
-   		$scope.usuario = {username: "No logueado", password: "", email:""};
+   		$scope.usuario = {username: "No login", password: "", email:""};
+
+   		$scope.historiaSeleccionada = null;
+	    $scope.sucesoSelecc = "";
+	    $scope.sucesos = null;
+	    $scope.fechaFormateada= null;
 
    		//se realiza el logout con peticion hacia el back,
    		//ya que satellizer no la hace(como si sucede en los login o signin)
    		$http.post("/api/rest-auth/logout/", {})
 		    .then(function(respuesta){
 					console.log("Logout rest-auth OK", respuesta);
+                    //y el logout de satellizer
                     $auth.logout()
                         .then(function() {
                          console.log("Logout satellizer OK");

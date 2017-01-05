@@ -2,7 +2,7 @@
 //----------------------------------------------------------------------------------------------------------------------------
 //Controlador para modificar historias
 //----------------------------------------------------------------------------------------------------------------------------
-app.controller('modalModificarHistoria', function ($scope, $http, $uibModalInstance,  refresh) {
+app.controller('modalModificarHistoria', function ($scope, $http, $uibModalInstance, $translate, $filter, refresh) {
 	console.log("modalModificarHistoria:",refresh.historiaSeleccionada);
 	$scope.item = refresh.historiaSeleccionada;
 	$scope.mostrarHtml="modificar";
@@ -13,6 +13,7 @@ app.controller('modalModificarHistoria', function ($scope, $http, $uibModalInsta
 				.then(function(respuesta){
 					console.log("PUT historias OK", respuesta);
 					refresh.historiaSeleccionada=$scope.item;
+					refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertMHistoria')});
 				}, function(respuesta){
 					console.log("Error PUT historias", respuesta);
 					//refresh.historias = [{name: "Error!! " + respuesta.status}];
@@ -44,6 +45,7 @@ app.controller('modalModificarHistoria', function ($scope, $http, $uibModalInsta
 					console.log("DELETE historias OK", respuesta);
 					refresh.historiaSeleccionada=null;
 					refresh.sucesos=null;
+					refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertEHistoria')});
 				}, function(respuesta){
 					console.log("Error DELETE historias", respuesta);
 					//refresh.historias = [{name: "Error!! " + respuesta.status}];

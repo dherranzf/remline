@@ -7,10 +7,7 @@
 app.directive('ghVisualization', function () {
 
 
-	// Dimensiones de canvas/dibujo
-	var margin = {top: 30, right: 20, bottom: 30, left: 80},
-	    width = 1000 - margin.left - margin.right,
-	    height = 270 - margin.top - margin.bottom;
+
 
   	return {
 	    restrict: 'E',
@@ -20,6 +17,12 @@ app.directive('ghVisualization', function () {
 	},
 	link: function (scope, element, attrs) {
 
+
+	    // Dimensiones de canvas/dibujo
+	    var margin = {top: 30, right: 20, bottom: 30, left: 80},
+	    width = 0.85*(parseInt((d3.select('#chart').style('width')), 10)),
+        width = width - margin.left - margin.right,
+	    height = 270 - margin.top - margin.bottom;
 
 		// Parsear fecha
 		var parseDate = d3.timeFormat("%d-%b-%Y");
@@ -222,6 +225,13 @@ app.directive('ghVisualization', function () {
 		vis.append("g")
 		    .attr("class", "grid")
 		    .call(yAxisGrid);
+
+        /*d3.select(window).on('resize', resize);
+        function resize() {
+            width = 0.85*(parseInt((d3.select('#chart').style('width')), 10));
+            width = width - margin.left - margin.right;
+
+        }*/
 
       });
     }

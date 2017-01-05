@@ -3,7 +3,7 @@
 //Controlador para modificar sucesos
 //----------------------------------------------------------------------------------------------------------------------------
 
-app.controller('modalModificarSuceso', function ($scope, $http, $uibModalInstance,  refresh) {
+app.controller('modalModificarSuceso', function ($scope, $http, $uibModalInstance, $translate, $filter, refresh) {
 	console.log("modalModificarSuceso:",refresh.sucesoSelecc);
 
 	$scope.mostrarHtml="modificar";
@@ -42,6 +42,7 @@ app.controller('modalModificarSuceso', function ($scope, $http, $uibModalInstanc
 				.then(function(respuesta){
 					console.log("PUT sucesos OK", respuesta);
 					refresh.sucesoSelecc=$scope.item;
+					refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertMSuceso')});
 				}, function(respuesta){
 					console.log("Error PUT sucesos", respuesta);
 					//refresh.sucesos = [{name: "Error!! " + respuesta.status}];
@@ -71,6 +72,7 @@ app.controller('modalModificarSuceso', function ($scope, $http, $uibModalInstanc
 				.then(function(respuesta){
 					console.log("DELETE sucesos OK", respuesta);
 					refresh.sucesoSelecc="";
+				    refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertESuceso')});
 				}, function(respuesta){
 					console.log("Error DELETE sucesos", respuesta);
 					//refresh.historias = [{name: "Error!! " + respuesta.status}];
