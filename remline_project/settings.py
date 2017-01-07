@@ -39,7 +39,7 @@ except NameError:
             to generate your secret key!' % SECRET_FILE)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -81,7 +81,7 @@ REST_FRAMEWORK = {
     #para indicar que el tipo de autenticacion es por Token
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.TokenAuthentication',),
     #con esta configuracion desactivo el visor por defecto de rest_framework en el sistema
-    'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
+    #'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
 }
 
 
@@ -167,7 +167,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
-
 
 #Para permitir a nginx servir archivos estaticos directamente
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
