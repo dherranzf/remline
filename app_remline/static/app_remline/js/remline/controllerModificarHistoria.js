@@ -14,26 +14,28 @@ app.controller('modalModificarHistoria', function ($scope, $http, $uibModalInsta
 					console.log("PUT historias OK", respuesta);
 					refresh.historiaSeleccionada=$scope.item;
 					refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertMHistoria')});
+
+					$http.get("/api/historias/"+refresh.usuario.username)
+                        .then(function(respuesta){
+                            console.log("res", respuesta);
+                            refresh.historias = respuesta.data;
+                            //para dejar seleccionada la historia
+                            for (var i = 0; i < refresh.historias.length; i++) {
+                                if(refresh.historias[i].nombre==$scope.item.nombre){
+                                    refresh.historiaSeleccionada = refresh.historias[i];
+                                    //console.log("Historia seleccionada:", refresh.historiaSeleccionada);
+                                }
+                            }
+                        }, function(respuesta){
+                            console.log("Error GET historias", respuesta);
+                            refresh.historias = [{name: "Error!! " + respuesta.status}];
+				    });
 				}, function(respuesta){
 					console.log("Error PUT historias", respuesta);
 					//refresh.historias = [{name: "Error!! " + respuesta.status}];
 				});
 
-				  $http.get("/api/historias/"+refresh.usuario.username)
-					.then(function(respuesta){
-						console.log("res", respuesta);
-						refresh.historias = respuesta.data;
-						//para dejar seleccionada la historia
-						for (var i = 0; i < refresh.historias.length; i++) {
-						  	if(refresh.historias[i].nombre==$scope.item.nombre){
-						  		refresh.historiaSeleccionada = refresh.historias[i];
-								//console.log("Historia seleccionada:", refresh.historiaSeleccionada);
-							}
-						}
-					}, function(respuesta){
-						console.log("Error GET historias", respuesta);
-						refresh.historias = [{name: "Error!! " + respuesta.status}];
-				  });
+
 
 			  $uibModalInstance.dismiss('cancel');
 	  };
@@ -46,19 +48,21 @@ app.controller('modalModificarHistoria', function ($scope, $http, $uibModalInsta
 					refresh.historiaSeleccionada=null;
 					refresh.sucesos=null;
 					refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertEHistoria')});
+
+					$http.get("/api/historias/"+refresh.usuario.username)
+                        .then(function(respuesta){
+                            console.log("res", respuesta);
+                            refresh.historias = respuesta.data;
+                        }, function(respuesta){
+                            console.log("Error GET historias", respuesta);
+                            refresh.historias = [{name: "Error!! " + respuesta.status}];
+				    });
 				}, function(respuesta){
 					console.log("Error DELETE historias", respuesta);
 					//refresh.historias = [{name: "Error!! " + respuesta.status}];
 				});
 
-				  $http.get("/api/historias/"+refresh.usuario.username)
-					.then(function(respuesta){
-						console.log("res", respuesta);
-						refresh.historias = respuesta.data;
-					}, function(respuesta){
-						console.log("Error GET historias", respuesta);
-						refresh.historias = [{name: "Error!! " + respuesta.status}];
-				  });
+
 
 			  $uibModalInstance.dismiss('cancel');
 	  };

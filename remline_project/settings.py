@@ -39,7 +39,7 @@ except NameError:
             to generate your secret key!' % SECRET_FILE)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -73,7 +73,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 #Para registros en entorno de DESARROLLO (desactivamos email)
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 REST_FRAMEWORK = {
     #para solo permitir llamadas a la api de usuarios identificados
@@ -81,7 +81,7 @@ REST_FRAMEWORK = {
     #para indicar que el tipo de autenticacion es por Token
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.TokenAuthentication',),
     #con esta configuracion desactivo el visor por defecto de rest_framework en el sistema
-    #'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
+    'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
 }
 
 
@@ -169,7 +169,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 
 #Para permitir a nginx servir archivos estaticos directamente
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+#STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 #* ejecutar ./manage.py collectstatic
 
 

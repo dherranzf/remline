@@ -43,25 +43,28 @@ app.controller('modalModificarSuceso', function ($scope, $http, $uibModalInstanc
 					console.log("PUT sucesos OK", respuesta);
 					refresh.sucesoSelecc=$scope.item;
 					refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertMSuceso')});
+
+					$http.get("/api/sucesos/"+$scope.item.historia)
+                        .then(function(respuesta){
+                            console.log("res", respuesta);
+                            refresh.sucesos = respuesta.data;
+                            //para dejar seleccionada el suceso
+                            for (var i = 0; i < refresh.sucesos.length; i++) {
+                                if(refresh.sucesos[i].nombre==$scope.item.nombre){
+                                    refresh.sucesoSelecc = refresh.sucesos[i];
+                                }
+                            }
+                        }, function(respuesta){
+                            console.log("Error GET sucesos", respuesta);
+                            refresh.sucesos = [{name: "Error!! " + respuesta.status}];
+				    });
+					
 				}, function(respuesta){
 					console.log("Error PUT sucesos", respuesta);
 					//refresh.sucesos = [{name: "Error!! " + respuesta.status}];
 				});
 
-				  $http.get("/api/sucesos/"+$scope.item.historia)
-					.then(function(respuesta){
-						console.log("res", respuesta);
-						refresh.sucesos = respuesta.data;
-						//para dejar seleccionada el suceso
-						for (var i = 0; i < refresh.sucesos.length; i++) {
-						  	if(refresh.sucesos[i].nombre==$scope.item.nombre){
-						  		refresh.sucesoSelecc = refresh.sucesos[i];
-							}
-						}
-					}, function(respuesta){
-						console.log("Error GET sucesos", respuesta);
-						refresh.sucesos = [{name: "Error!! " + respuesta.status}];
-				  });
+
 
 			  $uibModalInstance.dismiss('cancel');
 	  };
@@ -73,19 +76,22 @@ app.controller('modalModificarSuceso', function ($scope, $http, $uibModalInstanc
 					console.log("DELETE sucesos OK", respuesta);
 					refresh.sucesoSelecc="";
 				    refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertESuceso')});
+
+				    $http.get("/api/sucesos/"+$scope.item.historia)
+                        .then(function(respuesta){
+                            console.log("res", respuesta);
+                            refresh.sucesos = respuesta.data;
+                        }, function(respuesta){
+                            console.log("Error GET sucesos", respuesta);
+                            refresh.sucesos = [{name: "Error!! " + respuesta.status}];
+				    });
+
 				}, function(respuesta){
 					console.log("Error DELETE sucesos", respuesta);
 					//refresh.historias = [{name: "Error!! " + respuesta.status}];
 				});
 
-				  $http.get("/api/sucesos/"+$scope.item.historia)
-					.then(function(respuesta){
-						console.log("res", respuesta);
-						refresh.sucesos = respuesta.data;
-					}, function(respuesta){
-						console.log("Error GET sucesos", respuesta);
-						refresh.sucesos = [{name: "Error!! " + respuesta.status}];
-				  });
+
 
 			  $uibModalInstance.dismiss('cancel');
 	  };
