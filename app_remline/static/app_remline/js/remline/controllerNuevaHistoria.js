@@ -86,16 +86,33 @@ app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,
 								    continue;
 								}
 
+								var f= $scope.file[i].fecha;
+								console.log("aaaantes", f);
+
+                                var arr = f.split("/");
+                                var f1 = arr[0];
+                                var f2 = arr[1];
+                                var f3 = arr[2];
+                                var f4 = f3+'-'+f2+'-'+f1;
+								//f = f.replace('/','-');
+								//f = f.replace('/','-');
+
+
+								console.log("despueeeeees", f4);
+
+
 								event_enviar = {nombre: $scope.file[i].nombre, 
 										descripcion: $scope.file[i].descripcion, 
-										fecha: (new Date($scope.file[i].fecha)),
+										fecha: new Date(f4),
 										tipo: $scope.file[i].tipo, 
 										coste: $scope.file[i].relevancia, 
 										media: $scope.file[i].url, 
 										historia: refresh.historiaSeleccionada.id
 								}
 
-								  
+
+								  	     console.log("FIIINNAAAAAAAAL", event_enviar.fecha);
+
 								$http.post("/api/sucesos/", event_enviar)
 									.then(function(respuesta){
 									   console.log("POST sucesos OK", respuesta);
