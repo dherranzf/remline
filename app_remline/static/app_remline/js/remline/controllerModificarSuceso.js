@@ -58,7 +58,7 @@ app.controller('modalModificarSuceso', function ($scope, $http, $uibModalInstanc
                             console.log("Error GET sucesos", respuesta);
                             refresh.sucesos = [{name: "Error!! " + respuesta.status}];
 				    });
-					
+
 				}, function(respuesta){
 					console.log("Error PUT sucesos", respuesta);
 					//refresh.sucesos = [{name: "Error!! " + respuesta.status}];

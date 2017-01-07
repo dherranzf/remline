@@ -41,6 +41,14 @@ app.controller('modalNuevoSuceso', function ($scope, $http, $uibModalInstance, $
 					console.log("POST sucesos OK", respuesta);
 					refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertNSuceso')});
 
+                    $http.get("/api/sucesos/"+$scope.item.historia)
+                        .then(function(respuesta){
+                            console.log("res", respuesta);
+                            refresh.sucesos = respuesta.data;
+                        }, function(respuesta){
+                            console.log("Error GET sucesos", respuesta);
+                            refresh.sucesos = [{name: "Error!! " + respuesta.status}];
+                    });
 				}, function(respuesta){
 					console.log("Error POST sucesos", respuesta);
 					refresh.sucesos = [{name: "Error!! " + respuesta.status}];
@@ -49,14 +57,7 @@ app.controller('modalNuevoSuceso', function ($scope, $http, $uibModalInstance, $
 		  }
 		  $scope.loadData();
 
-		  $http.get("/api/sucesos/"+$scope.item.historia)
-			.then(function(respuesta){
-				console.log("res", respuesta);
-				refresh.sucesos = respuesta.data;
-			}, function(respuesta){
-				console.log("Error GET sucesos", respuesta);
-				refresh.sucesos = [{name: "Error!! " + respuesta.status}];
-		});
+
 	  };
 	
 	  $scope.cancel = function () {

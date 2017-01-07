@@ -17,6 +17,22 @@ app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,
 					refresh.sucesos=[];
 			    	refresh.alerts.push({type: 'success',msg: $filter('translate')('_alertNHistoria')});
 
+                      $http.get("/api/historias/"+refresh.usuario.username)
+                        .then(function(respuesta){
+                            console.log("res", respuesta);
+                            refresh.historias = respuesta.data;
+                            //para dejar seleccionada la historia
+                            for (var i = 0; i < refresh.historias.length; i++) {
+                                if(refresh.historias[i].nombre==$scope.item.nombre){
+                                    if(!noDismiss) refresh.historiaSeleccionada = refresh.historias[i];
+                                    //console.log("Historia seleccionada:", refresh.historiaSeleccionada);
+                                }
+                            }
+                        }, function(respuesta){
+                            console.log("Error GET historias", respuesta);
+                            refresh.historias = [{name: "Error!! " + respuesta.status}];
+                      });
+
 				}, function(respuesta){
 					console.log("Error POST historias", respuesta);
 					refresh.historias = [{name: "Error!! " + respuesta.status}];
@@ -25,21 +41,7 @@ app.controller('modalNuevaHistoria', function ($scope, $http, $uibModalInstance,
 		  }
 		  $scope.loadData();
 
-		  $http.get("/api/historias/"+refresh.usuario.username)
-			.then(function(respuesta){
-				console.log("res", respuesta);
-				refresh.historias = respuesta.data;
-				//para dejar seleccionada la historia
-				for (var i = 0; i < refresh.historias.length; i++) {
-				  	if(refresh.historias[i].nombre==$scope.item.nombre){
-				  		if(!noDismiss) refresh.historiaSeleccionada = refresh.historias[i];
-						//console.log("Historia seleccionada:", refresh.historiaSeleccionada);
-					}
-				}
-			}, function(respuesta){
-				console.log("Error GET historias", respuesta);
-				refresh.historias = [{name: "Error!! " + respuesta.status}];
-		  });
+
 
 
 
