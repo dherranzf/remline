@@ -51,8 +51,11 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
             })
             .catch(function(respuesta){
                 console.log("Login ERROR", respuesta);
-                $scope.addAlert('danger', $filter('translate')('_alertLogin') + respuesta.status);
-
+                for(var aux in respuesta.data){
+                        //$scope.addAlert('danger', $filter('translate')('_alertRegistro3') + respuesta.status);
+                        $scope.addAlert('danger', (respuesta.data[aux])[0]);
+                        break;
+			    }
             });
 
 
@@ -73,12 +76,9 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
 
 	$scope.register = function (id) {
 
-        if($scope.usuarioNuevo.passConfirm != $scope.usuarioNuevo.pass){
+        if($scope.usuarioNuevo.password1 != $scope.usuarioNuevo.password2){
                  $scope.addAlert('danger', $filter('translate')('_alertRegistro'));
-
         }else{
-
-
                 $auth.signup($scope.usuarioNuevo)
                 .then(function(req) {
                     console.log("Registro OK");
@@ -88,7 +88,11 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
                 })
                 .catch(function(respuesta) {
 					console.log("Registro ERROR", respuesta);
-					$scope.addAlert('danger', $filter('translate')('_alertRegistro3') + respuesta.status);
+					for(var aux in respuesta.data){
+						//$scope.addAlert('danger', $filter('translate')('_alertRegistro3') + respuesta.status);
+					    $scope.addAlert('danger', (respuesta.data[aux])[0]);
+					    break;
+					}
 			    });
 
         		/*$http.post("/api/rest-auth/registration/", $scope.usuarioNuevo)
@@ -122,7 +126,11 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
 
                     }, function(respuesta){
                         console.log("Recordar contraseña ERROR", respuesta);
-                        $scope.addAlert('danger',$filter('translate')('_alertResetPass3') + respuesta.status);
+                        for(var aux in respuesta.data){
+                            //$scope.addAlert('danger', $filter('translate')('_alertRegistro3') + respuesta.status);
+                            $scope.addAlert('danger', (respuesta.data[aux])[0]);
+                            break;
+					    }
                     });
 
                 }
@@ -137,7 +145,11 @@ app.controller('loginController', function ($scope, $http, $uibModalInstance, re
 
 				}, function(respuesta){
 					console.log("Confirmar recordar  contraseña ERROR", respuesta);
-					$scope.addAlert('danger', $filter('translate')('_alertResetConfirmPass2') + respuesta.status);
+					for(var aux in respuesta.data){
+						//$scope.addAlert('danger', $filter('translate')('_alertRegistro3') + respuesta.status);
+					    $scope.addAlert('danger', (respuesta.data[aux])[0]);
+					    break;
+					}
 				});
 
 

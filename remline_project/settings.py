@@ -41,7 +41,7 @@ except NameError:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['remline.grial.eu',]
 
 
 # Application definition
@@ -73,7 +73,18 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 #Para registros en entorno de DESARROLLO (desactivamos email)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+#Email
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'remlineUSAL@gmail.com'
+EMAIL_HOST_PASSWORD = 'dani1234'
+
+
 
 REST_FRAMEWORK = {
     #para solo permitir llamadas a la api de usuarios identificados

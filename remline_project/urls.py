@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from . import views
+
 
 urlpatterns = [
     url(r'^remline/', include('app_remline.urls')),
     url(r'^api/', include('app_api_rest.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^.*$', views.re_remline, name='re_remline'),
 ]

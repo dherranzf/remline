@@ -99,7 +99,9 @@ var app = angular.module('appTest',['ui.bootstrap','ngRoute', 'pascalprecht.tran
  		"_alertResetPass2" : "Se ha enviado un email a su correo",
 		"_alertResetPass3" : "Error recordar contraseña - ",
 		"_alertResetConfirmPass1" : "Nueva contraseña guardada",
-		"_alertResetConfirmPass2" : "Error confirmar recordar contraseña - "
+		"_alertResetConfirmPass2" : "Error confirmar recordar contraseña - ",
+		"_alertRegistro8" : "La contraseña debe tener al menos 8 caracteres"
+
 
   	});
   	$translateProvider.translations('en',{
